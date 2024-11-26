@@ -1,5 +1,5 @@
 # created by Kıvanç Filizci on 26 Nov 2024
-# tin case of necessity csv files will be utilied instead of excel files
+# tin case of necessity csv files will be utilized instead of excel files
 # this script reads the csv files and creates a merged dataset
 
 
