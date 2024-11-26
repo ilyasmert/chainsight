@@ -1,4 +1,4 @@
-# created by Kıvanç Filizci on 26 Nov 2024
+# created by Kıvanç Filizci on 25 Nov 2024
 # tin case of necessity csv files will be utilized instead of excel files
 # this script reads the csv files and creates a merged dataset
 
@@ -7,7 +7,8 @@ import pandas as pd
 import os
 
 # Define the directory
-input_directory = 'datasets/datasets_modified'
+# input_directory = 'datasets/datasets_modified'
+input_directory = 'datasets/datasets_pseudo'
 
 # Iterate over all Excel files in the input directory
 for filename in os.listdir(input_directory):
