@@ -1,3 +1,10 @@
+# created by Kıvanç Filizci on 26 Nov 2024
+# SPRINT-2 : ITEM-3 : Analysing the Data for the Project
+# the excel files provided by the client are summarized in terms of statistics
+
+
+
+
 import pandas as pd
 import os
 

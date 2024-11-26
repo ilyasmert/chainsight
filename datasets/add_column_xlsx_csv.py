@@ -1,12 +1,14 @@
 # created by Kıvanç Filizci on 26 Nov 2024
+# SPRINT-2 : ITEM-3 : Analysing the Data for the Project
 # this script adds a new column "Year" to all Excel and CSV files in the "datasets/datasets_modified" directory
 # and renames the "Sheet ID" column to "Week Number" if it exists
+
 
 import pandas as pd
 import os
 
 # Define the directory
-input_directory = 'datasets/datasets_modified'
+input_directory = 'datasets_modified'
 
 # Iterate over all files in the input directory
 for filename in os.listdir(input_directory):

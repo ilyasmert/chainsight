@@ -1,4 +1,5 @@
 # created by Kıvanç Filizci on 25 Nov 2024
+# SPRINT-2 : ITEM-3 : Analysing the Data for the Project
 # tin case of necessity csv files will be utilized instead of excel files
 # this script reads the csv files and creates a merged dataset
 
@@ -7,8 +8,8 @@ import pandas as pd
 import os
 
 # Define the directory
-# input_directory = 'datasets/datasets_modified'
-input_directory = 'datasets/datasets_pseudo'
+# input_directory = 'datasets_modified'
+input_directory = 'datasets_pseudo'
 
 # Iterate over all Excel files in the input directory
 for filename in os.listdir(input_directory):
