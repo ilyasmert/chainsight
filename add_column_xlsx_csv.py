@@ -1,5 +1,5 @@
 # created by Kıvanç Filizci on 26 Nov 2024
-# this script adds a new column "Year" to all Excel and CSV files in the "datasets/modified" directory
+# this script adds a new column "Year" to all Excel and CSV files in the "datasets/datasets_modified" directory
 # and renames the "Sheet ID" column to "Week Number" if it exists
 
 import pandas as pd
