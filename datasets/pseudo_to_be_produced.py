@@ -1,6 +1,6 @@
 # created by Kıvanç Filizci on 22 Nov 2024
-# generate pseudo to-be-produced data for the project since the real data is not provided yet
 # SPRINT-2 : ITEM-4 : creating pseudo datasets for the project
+# generate pseudo to-be-produced data for the project since the real data is not provided yet
 
 import pandas as pd
 import os
