@@ -1,0 +1,4 @@
+Status: Optimal
+Units transported by truck: 200.0
+Units transported by container: 1000.0
+Total Cost: $70000.0
