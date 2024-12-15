@@ -1,7 +1,6 @@
 # created by Kıvanç Filizci on 22 Nov 2024
-# SPRINT-2 : ITEM-4 : creating pseudo datasets for the project
-# generate pseudo ready data for the project since the real data is not provided yet
-
+# SPRINT-2 : ITEM-4 : creating pseudo datasets_old for the project
+# generate pseudo to-be-produced data for the project since the real data is not provided yet
 
 import pandas as pd
 import os
@@ -10,7 +9,7 @@ from datetime import datetime, timedelta
 
 # Define the directory and file name
 output_directory = 'datasets_pseudo'
-output_file = 'ready.xlsx'
+output_file = 'to-be-produced.xlsx'
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_directory, exist_ok=True)
@@ -25,14 +24,15 @@ data = {
     'productId': [f'P{i:04d}' for i in range(1, 501)],
     'product': [f'Product {i}' for i in range(1, 501)],
     'quantity (sq2)': [random.uniform(1, 1000) for _ in range(500)],
+    'etp': [(datetime.now() - timedelta(days=random.randint(1, 365))) for _ in range(500)],
     'year': [2024] * 500
 }
 
-# Generate random dates for the year 2024
-dates = [(datetime.now() - timedelta(days=random.randint(1, 365))) for _ in range(500)]
+# Calculate weekNumber based on etp
+data['weekNumber'] = [calculate_week_number(etp) for etp in data['etp']]
 
-# Calculate weekNumber based on dates
-data['weekNumber'] = [calculate_week_number(date) for date in dates]
+# Convert etp to string format
+data['etp'] = [etp.strftime('%Y-%m-%d') for etp in data['etp']]
 
 # Create a DataFrame
 df = pd.DataFrame(data)

@@ -1,5 +1,5 @@
 # created by Kıvanç Filizci on 22 Nov 2024
-# SPRINT-2 : ITEM-4 : creating pseudo datasets for the project
+# SPRINT-2 : ITEM-4 : creating pseudo datasets_old for the project
 # generate pseudo intransit data for the project since the real data is not provided yet
 
 

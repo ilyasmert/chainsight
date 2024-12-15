@@ -1,6 +1,6 @@
 # created by Kıvanç Filizci on 26 Nov 2024
 # SPRINT-2 : ITEM-3 : Analysing the Data for the Project
-# this script adds a new column "Year" to all Excel and CSV files in the "datasets/datasets_modified" directory
+# this script adds a new column "Year" to all Excel and CSV files in the "datasets_old/datasets_modified" directory
 # and renames the "Sheet ID" column to "Week Number" if it exists
 
 
