@@ -38,7 +38,7 @@ with open('outputs/drop_tables_output.txt', 'w') as output_file:
         print("Tables found in the public schema:", table_names)
         # Drop each table
         for table in table_names:
-            drop_table_query = f"DROP TABLE IF EXISTS {table};"
+            drop_table_query = f"DROP TABLE IF EXISTS {table} CASCADE;"
             cur.execute(drop_table_query)
             print(f"Table '{table}' dropped successfully.")
 
