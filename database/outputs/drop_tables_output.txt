@@ -1,0 +1,7 @@
+Tables found in the public schema: ['intransit', 'ready', 'users', 'roles', 'sales', 'to_be_produced', 'user_roles', 'transportation', 'transportation_archive', 'atp_stock']
+Table 'intransit' dropped successfully.
+Table 'ready' dropped successfully.
+Unexpected error: cannot drop table users because other objects depend on it
+DETAIL:  constraint user_roles_userid_fkey on table user_roles depends on table users
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
