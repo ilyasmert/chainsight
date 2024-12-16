@@ -6,7 +6,7 @@ ________________________________________________________________________________
 ## Creating the Template Database
 
 ____________________________________________________________________________________
-### 3.1.1. Transforming the Data for the Database
+### 3.1.1. x
 * The dataset provided by the client was in Excel format.
 * The dataset was transformed into CSV format.
 * The dataset was split into 5 different CSV files.
@@ -52,6 +52,8 @@ ____________________________________________________
   * Save the rule.
   * **remarks**: This is not a secure way to connect to the database. It is only for testing purposes.
   * connection was successful.
+  
+
 
 ### 3.1.3.2. Connecting to the Database using Python
 * https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/PostgreSQL.Connecting.PythonDriver.html
@@ -91,8 +93,10 @@ ________________________________________________________________________________
     * transportation_archive
 
 * **Python scripts used**
-    * create_tables.py
-    * drop_tables.py
+  * create_tables.p
+  * drop_tables.py
+    
+
 ____________________________________________________________________________________
 ### 3.1.5. Inserting Data into the Tables
 
@@ -109,6 +113,7 @@ ________________________________________________________________________________
     Loading data from 'sales.csv' into table 'sales'
         Data from 'sales.csv' loaded successfully into table 'sales', 16880 rows inserted
     Skipped rows saved to 'skipped_rows.csv'
+
 
 * **Python scripts used**
     * load_data_to_tables.py
