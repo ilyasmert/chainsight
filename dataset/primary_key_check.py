@@ -12,7 +12,7 @@ import os
 import pandas as pd
 
 # Define the absolute or relative path to the directory containing the CSV files
-csv_directory = '../dataset/dataset_chainsight'  # Update this path accordingly
+csv_directory = '../dataset/dataset_chainsight_with_duplicates'  # Update this path accordingly
 
 # Open a text file to write the output
 with open('primary_key_check_output.txt', 'w') as output_file:

@@ -29,7 +29,7 @@ from datetime import datetime
 #############################################################################################
 # Define the directories
 input_directory = 'dataset_provided'
-output_directory = 'dataset_chainsight'
+output_directory = 'dataset_chainsight_with_duplicates'
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_directory, exist_ok=True)

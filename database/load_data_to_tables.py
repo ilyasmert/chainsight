@@ -12,7 +12,7 @@ from psycopg2 import OperationalError
 #############################################################################################
 
 #############################################################################################
-csv_directory = '../dataset/dataset_chainsight'
+csv_directory = '../dataset/dataset_chainsight_no_duplicates'
 skipped_rows = []
 
 # Define the NOT NULL fields for each table
