@@ -1,0 +1,31 @@
+{
+  "file_variants": {
+    "ready": ["ready.xlsx", "hazır.xlsx"],
+    "sales": ["sales.xlsx", "satış.xlsx"],
+    "to_be_produced": ["to_be_produced.xlsx", "üretilecek.xlsx"],
+    "intransit": ["intransit.xlsx", "nakliyede.xlsx"],
+    "atp_stock": ["atp_stock.xlsx", "atp_stok.xlsx"]
+  },
+
+    "column_info": {
+      "default_columns": ["productId", "quantity", "weekId", "year"],
+      "extra_columns": {
+        "to_be_produced": "ETD",
+        "intransit": "ETA"
+    }
+  },
+
+  "database_config": {
+    "host": "db-chainsight.postgres.database.azure.com",
+    "dbname": "db-chainsight",
+    "user": "metuCeng",
+    "password": "chainsight-2025",
+    "port": 5432
+  },
+
+  "directories": {
+    "base_dir": "../database_azure_archive_triggers/",
+    "upload_dir": "../database_azure_archive_triggers/test_data/week54/",
+    "log_dir": "../database_azure_archive_triggers/log_files/"
+  }
+}

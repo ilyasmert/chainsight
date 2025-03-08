@@ -1,0 +1,25 @@
+[2025-03-08 23:10:46] [TABLE: ready] Starting data processing for ready.
+[2025-03-08 23:10:46] [TABLE: ready] Found file: ../database_azure_archive_triggers/test_data/week53/ready.xlsx
+[2025-03-08 23:10:46] [TABLE: ready] Converted ../database_azure_archive_triggers/test_data/week53/ready.xlsx to ../database_azure_archive_triggers/test_data/week53/ready.csv.
+[2025-03-08 23:10:47] [TABLE: database] Database connection failed: could not translate host name "db-chainsight.postgres.database_aws.azure.com" to address: nodename nor servname provided, or not known
+
+[2025-03-08 23:16:18] [TABLE: ready] Starting data processing for ready.
+[2025-03-08 23:16:18] [TABLE: ready] Found file: ../database_azure_archive_triggers/test_data/week53/ready.xlsx
+[2025-03-08 23:16:19] [TABLE: ready] Converted ../database_azure_archive_triggers/test_data/week53/ready.xlsx to ../database_azure_archive_triggers/test_data/week53/ready.csv.
+[2025-03-08 23:16:20] [TABLE: database] Successfully connected to Azure PostgreSQL.
+[2025-03-08 23:16:20] [TABLE: ready] Archived old data from ready to ready_archive.
+[2025-03-08 23:16:21] [TABLE: ready] Cleared the ready table.
+[2025-03-08 23:16:22] [TABLE: ready] Loaded data from ../database_azure_archive_triggers/test_data/week53/ready.csv into ready table.
+[2025-03-08 23:16:22] [TABLE: ready] All transactions for ready committed successfully.
+[2025-03-08 23:16:22] [TABLE: ready] Database connection closed for ready.
+
+
+[2025-03-08 23:18:24] [TABLE: ready] Starting data processing for ready.
+[2025-03-08 23:18:24] [TABLE: ready] Found file: ../database_azure_archive_triggers/test_data/week54/hazır.xlsx
+[2025-03-08 23:18:24] [TABLE: ready] Converted ../database_azure_archive_triggers/test_data/week54/hazır.xlsx to ../database_azure_archive_triggers/test_data/week54/ready.csv.
+[2025-03-08 23:18:25] [TABLE: database] Successfully connected to Azure PostgreSQL.
+[2025-03-08 23:18:26] [TABLE: ready] Archived old data from ready to ready_archive.
+[2025-03-08 23:18:26] [TABLE: ready] Cleared the ready table.
+[2025-03-08 23:18:27] [TABLE: ready] Loaded data from ../database_azure_archive_triggers/test_data/week54/ready.csv into ready table.
+[2025-03-08 23:18:27] [TABLE: ready] All transactions for ready committed successfully.
+[2025-03-08 23:18:27] [TABLE: ready] Database connection closed for ready.
