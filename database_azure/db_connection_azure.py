@@ -7,7 +7,7 @@ import psycopg2
 
 ####################################################
 # Define the connection parameters
-host = "db-chainsight.postgres.database_aws.azure.com"
+host = "db-chainsight.postgres.database.azure.com"
 database = "db-chainsight"
 user = "metuCeng"
 password = "chainsight-2025"
