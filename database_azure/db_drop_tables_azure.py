@@ -20,7 +20,6 @@ connection = None
 cursor = None
 ####################################################
 
-
 ####################################################
 # Ensure output directory exists
 os.makedirs('outputs', exist_ok=True)
@@ -61,7 +60,6 @@ with open('outputs/drop_tables_output.txt', 'w') as output_file:
 
         cursor.close()
         connection.close()
-
 
     except OperationalError as e:
         print(f'OperationalError: {e}')

@@ -171,7 +171,6 @@ try:
         PRIMARY KEY (userId),
         FOREIGN KEY (roleId) REFERENCES user_roles(roleId)
         );'''
-
     }
 
     # Function to create tables

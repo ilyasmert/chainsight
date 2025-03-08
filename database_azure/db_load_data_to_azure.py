@@ -124,7 +124,6 @@ with open('outputs/load_data_to_tables_output.txt', 'w') as output_file:
         cursor.close()
         connection.close()
 
-
     except OperationalError as e:
         print(f'OperationalError: {e}')
         success = False

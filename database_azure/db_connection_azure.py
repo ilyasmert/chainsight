@@ -1,5 +1,5 @@
 ####################################################
-# Script to connect to Azure PostgreSQL database_aws   #
+# Script to connect to Azure PostgreSQL database   #
 # Created on 07 Mar 2025 by Kıvanç Filizci         #
 ####################################################
 
