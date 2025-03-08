@@ -2,7 +2,7 @@
 # created by Kıvanç Filizci on 14 Dec 2024                                                  #
 # updated on 16 Dec 2024 according to the feedback from the Client: no duplicates           #
 # SPRINT-3 : ITEM-1 : Creating the template database                                        #
-# issue-4 : Creating Tables in Database                                                     #
+# issue-2 : Creating Tables in Database                                                     #
 #############################################################################################
 
 
@@ -59,7 +59,7 @@ with open('outputs/create_tables_output.txt', 'w') as output_file:
                     eta DATE,
                     weekId VARCHAR(10) NOT NULL,
                     year INT NOT NULL,
-                     PRIMARY KEY (productId, weekId, year, eta)
+                    PRIMARY KEY (productId, weekId, year, eta)
                 );
         """
         cur.execute(create_intransit_table)
