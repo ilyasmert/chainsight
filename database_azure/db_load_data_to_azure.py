@@ -13,7 +13,7 @@ from datetime import datetime
 
 ####################################################
 # Define the connection parameters
-host = "db-chainsight.postgres.database.azure.com"
+host = "db-chainsight.postgres.database_aws.azure.com"
 database = "db-chainsight"
 user = "metuCeng"
 password = "chainsight-2025"
@@ -29,7 +29,7 @@ csv_directory = '../dataset/dataset_chainsight_no_duplicates'
 
 ####################################################
 
-# Convert CSV columns to database columns
+# Convert CSV columns to database_aws columns
 column_mappings = {
     'ProductId'             : 'productId',
     'WeekId'                : 'weekId',
@@ -61,7 +61,7 @@ with open('outputs/load_data_to_tables_output.txt', 'w') as output_file:
 
     try:
         connection = psycopg2.connect(
-        host        = "db-chainsight.postgres.database.azure.com",
+        host        = "db-chainsight.postgres.database_aws.azure.com",
         database    = "db-chainsight",
         user        = "metuCeng",
         password    = "chainsight-2025",

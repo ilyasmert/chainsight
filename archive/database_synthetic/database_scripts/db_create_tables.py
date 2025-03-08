@@ -1,53 +1,45 @@
-####################################################
-# Script to create tables on Azure PostgreSQL DB   #
-# Created on 07 Mar 2025 by Kıvanç Filizci         #
-####################################################
+#############################################################################################
+# created by Kıvanç Filizci on 05 Jan 2025                                                  #
+# SPRINT-4 : ITEM-3 : Search for external datasets and                                      #
+#                       assess their suitability for use in the project.                    #
+# issue-1 : task-1 : create synthetic database_aws and upload datasets                          #
+# function-2 : create tables in the database_aws                                                #
+#############################################################################################
 
-# Import the required libraries
+#############################################################################################
 import psycopg2
 from psycopg2 import OperationalError
+import sys
 import os
 
-####################################################
-# Define the connection parameters
-host = "db-chainsight.postgres.database_aws.azure.com"
-database = "db-chainsight"
-user = "metuCeng"
-password = "chainsight-2025"
-port = 5432  # default PostgreSQL port
-connection = None
-cursor = None
-####################################################
-
+#############################################################################################
 # Ensure output directory exists
 os.makedirs('outputs', exist_ok=True)
 
-####################################################
-# Connect to the Azure PostgreSQL database_aws
+#############################################################################################
+# Connect to the PostgreSQL database_aws server using the psycopg2 library
 try:
-    connection = psycopg2.connect(
-        host=host,
-        port=port,
-        user=user,
-        password=password,
-        database=database,
-        sslmode='require'  # Azure enforces SSL
+    conn = psycopg2.connect(
+        host="db-chainsight-synthetic.cd6k86gwohjc.eu-north-1.rds.amazonaws.com",
+        port=5432,
+        user="metuCeng",
+        password="metu-ceng-chainsight",
+        dbname="postgres"  # Ensure you specify the database_aws name
     )
 
-    connection.autocommit = True
-    cursor = connection.cursor()
+    conn.autocommit = True
+    cur = conn.cursor()
 
-# Simple test query
-    cursor.execute("SELECT version();")
-    db_version = cursor.fetchone()
+    # Execute a simple query to check the connection
+    cur.execute('SELECT version();')
+    db_version = cur.fetchone()
 
-# Write the database_aws version to output file
+    # Write the database_aws version to output file
     with open('outputs/create_tables_output.txt', 'w') as output_file:
         output_file.write(f'Database version: {db_version}\n')
 
-# Tables to be created
+    # Define table structures in a dictionary
     tables = {
-        # current tables
         'ready': '''CREATE TABLE IF NOT EXISTS ready (
             productId VARCHAR NOT NULL,
             quantity REAL,
@@ -85,53 +77,41 @@ try:
             year INTEGER NOT NULL,
             PRIMARY KEY (productId, weekId, year)
         );''',
-
-        # archive tables
-        'ready_archive': '''CREATE TABLE IF NOT EXISTS ready_archive (
+        'ready_last_week': '''CREATE TABLE IF NOT EXISTS ready_last_week (
             productId VARCHAR NOT NULL,
             quantity REAL,
             weekId INTEGER NOT NULL,
             year INTEGER NOT NULL,
-            archiveDate DATE NOT NULL,
-            archivedBy VARCHAR NOT NULL,
             PRIMARY KEY (productId, weekId, year)
         );''',
-        'sales_archive': '''CREATE TABLE IF NOT EXISTS sales_archive (
+        'sales_last_week': '''CREATE TABLE IF NOT EXISTS sales_last_week (
             productId VARCHAR NOT NULL,
             quantity REAL,
             weekId INTEGER NOT NULL,
             year INTEGER NOT NULL,
-            archiveDate DATE NOT NULL,
-            archivedBy VARCHAR NOT NULL,
             PRIMARY KEY (productId, weekId, year)
         );''',
-        'to_be_produced_archive': '''CREATE TABLE IF NOT EXISTS to_be_produced_archive (
+        'to_be_produced_last_week': '''CREATE TABLE IF NOT EXISTS to_be_produced_last_week (
             productId VARCHAR NOT NULL,
             quantity REAL,
             weekId INTEGER NOT NULL,
             year INTEGER NOT NULL,
             ETD DATE NOT NULL,
-            archiveDate DATE NOT NULL,
-            archivedBy VARCHAR NOT NULL,
             PRIMARY KEY (productId, weekId, year, ETD)
         );''',
-        'intransit_archive': '''CREATE TABLE IF NOT EXISTS intransit_archive (
+        'intransit_last_week': '''CREATE TABLE IF NOT EXISTS intransit_last_week (
             productId VARCHAR NOT NULL,
             quantity REAL,
             weekId INTEGER NOT NULL,
             year INTEGER NOT NULL,
             ETA DATE NOT NULL,
-            archiveDate DATE NOT NULL,
-            archivedBy VARCHAR NOT NULL,
             PRIMARY KEY (productId, weekId, year, ETA)
         );''',
-        'atp_stock_archive': '''CREATE TABLE IF NOT EXISTS atp_stock_archive (
+        'atp_stock_last_week': '''CREATE TABLE IF NOT EXISTS atp_stock_last_week (
             productId VARCHAR NOT NULL,
             quantity REAL,
             weekId INTEGER NOT NULL,
             year INTEGER NOT NULL,
-            archiveDate DATE NOT NULL,
-            archivedBy VARCHAR NOT NULL,
             PRIMARY KEY (productId, weekId, year)
         );''',
         'transportation_info': '''CREATE TABLE IF NOT EXISTS transportation_info (
@@ -141,7 +121,7 @@ try:
             transportationCost REAL,
             year INTEGER NOT NULL,
             PRIMARY KEY (transportationId, year)
-        );''',
+    );''',
         'transportation_info_archive': '''CREATE TABLE IF NOT EXISTS transportation_info_archive (
             transportationId VARCHAR NOT NULL,
             transportationName VARCHAR NOT NULL,
@@ -150,52 +130,29 @@ try:
             year INTEGER NOT NULL,
             archiveDate DATE NOT NULL,
             PRIMARY KEY (transportationId, year, archiveDate)
-        );''',
-        'pallet_info': '''CREATE TABLE IF NOT EXISTS pallet_info (
-            productId VARCHAR NOT NULL,
-            palletCapacity REAL,
-            palletWeight REAL,
-            PRIMARY KEY (productId)
-        );''',
-        'user_roles': '''CREATE TABLE IF NOT EXISTS user_roles (
-        roleId VARCHAR NOT NULL,
-        roleName VARCHAR NOT NULL,
-        PRIMARY KEY (roleId)
-        );''',
-        'users': '''CREATE TABLE IF NOT EXISTS users (
-        userId VARCHAR NOT NULL,
-        roleId VARCHAR NOT NULL,
-        userName VARCHAR NOT NULL,
-        userPassword VARCHAR NOT NULL,
-        userEMail VARCHAR NOT NULL,
-        PRIMARY KEY (userId),
-        FOREIGN KEY (roleId) REFERENCES user_roles(roleId)
-        );'''
-
+    );'''
     }
 
     # Function to create tables
     def create_table(table_name, table_query):
-        cursor.execute(table_query)
+        cur.execute(table_query)
         with open('outputs/create_tables_output.txt', 'a') as output_file:
-            output_file.write(f"Table '{table_name}' created successfully.\n")
+            output_file.write(f"{table_name} table created successfully.\n")
 
-    # Create tables
-    count = 0
+    # Iterate through the dictionary and create tables
+    table_count = 0
     for table_name, table_query in tables.items():
         create_table(table_name, table_query)
-        count += 1
+        table_count += 1
 
     with open('outputs/create_tables_output.txt', 'a') as output_file:
         output_file.write("____________________________________________\n")
-        output_file.write(f"{count} tables created successfully.\n")
+        output_file.write(f"{table_count} tables created successfully.\n")
+
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
 
 except OperationalError as e:
-    with open('outputs/create_tables_output.txt', 'w') as output_file:
-        output_file.write(f"OperationalError: {e}\n")
-
-finally:
-    if cursor:
-        cursor.close()
-    if connection:
-        connection.close()
+    with open('outputs/create_tables_output.txt', 'a') as output_file:
+        output_file.write(f"Error: {e}\n")

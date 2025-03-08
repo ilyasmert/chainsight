@@ -1,7 +1,7 @@
 #############################################################################################
 # created by Kıvanç Filizci on 14 Dec 2024                                                  #
 # updated on 16 Dec 2024 accordingly with "no duplicate" modification                       #
-# SPRINT-3  : ITEM-1 : Creating the template database                                       #
+# SPRINT-3  : ITEM-1 : Creating the template database_aws                                       #
 # issue-1   : Transformation of the Datasets Provided by the Client                         #
 #############################################################################################
 # Before creating the tables, candidates for the primary key columns should be checked.     #

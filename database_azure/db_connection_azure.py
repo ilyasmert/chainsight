@@ -1,5 +1,5 @@
 ####################################################
-# Script to connect to Azure PostgreSQL database   #
+# Script to connect to Azure PostgreSQL database_aws   #
 # Created on 07 Mar 2025 by Kıvanç Filizci         #
 ####################################################
 
@@ -7,7 +7,7 @@ import psycopg2
 
 ####################################################
 # Define the connection parameters
-host = "db-chainsight.postgres.database.azure.com"
+host = "db-chainsight.postgres.database_aws.azure.com"
 database = "db-chainsight"
 user = "metuCeng"
 password = "chainsight-2025"
@@ -17,7 +17,7 @@ cursor = None
 ####################################################
 
 ####################################################
-# Connect to the Azure PostgreSQL database
+# Connect to the Azure PostgreSQL database_aws
 try:
     connection = psycopg2.connect(
         host=host,

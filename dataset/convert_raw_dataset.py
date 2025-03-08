@@ -1,6 +1,6 @@
 #############################################################################################
 # created by Kıvanç Filizci on 14 Dec 2024                                                  #
-# SPRINT-3  : ITEM-1 : Creating the template database                                       #
+# SPRINT-3  : ITEM-1 : Creating the template database_aws                                       #
 # issue-1   : Transformation of the Datasets Provided by the Client                         #
 #############################################################################################
 # Dataset provided by the client is in the form of Excel files, containing multiple sheets. #

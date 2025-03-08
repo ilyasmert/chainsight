@@ -1,10 +1,10 @@
 #############################################################################################
 # created by Kıvanç Filizci on 16 Dec 2024                                                  #
-# SPRINT-3  : ITEM-1 : Creating the template database                                       #
+# SPRINT-3  : ITEM-1 : Creating the template database_aws                                       #
 # issue-1   : TTransformation of the Datasets Provided by the Client                        #
 #############################################################################################
 # The datasets provided by the Client include duplicate rows.                               #
-# To enhance an effective database, Primary Key constraints should be established.          #
+# To enhance an effective database_aws, Primary Key constraints should be established.          #
 # Therefore a further information exchange was conducted with the Client.                   #
 # The Client confirmed that the rows are supposed to be unique in the datasets, and for the #
 # datasets that contain duplicate rows, the duplicates should be summed up.                 #
