@@ -1,0 +1,11 @@
+Connection established successfully
+Loading data from 'intransit.csv' into table 'intransit_archive'
+Data from 'intransit.csv' loaded successfully into table 'intransit_archive', 8308 rows inserted
+Loading data from 'to_be_produced.csv' into table 'to_be_produced_archive'
+Data from 'to_be_produced.csv' loaded successfully into table 'to_be_produced_archive', 4801 rows inserted
+Loading data from 'atp_stock.csv' into table 'atp_stock_archive'
+Data from 'atp_stock.csv' loaded successfully into table 'atp_stock_archive', 16881 rows inserted
+Loading data from 'ready.csv' into table 'ready_archive'
+Data from 'ready.csv' loaded successfully into table 'ready_archive', 1796 rows inserted
+Loading data from 'sales.csv' into table 'sales_archive'
+Data from 'sales.csv' loaded successfully into table 'sales_archive', 16881 rows inserted

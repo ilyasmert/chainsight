@@ -1,0 +1,18 @@
+Database version: ('PostgreSQL 16.8 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 11.2.0, 64-bit',)
+Table 'ready' created successfully.
+Table 'sales' created successfully.
+Table 'to_be_produced' created successfully.
+Table 'intransit' created successfully.
+Table 'atp_stock' created successfully.
+Table 'ready_archive' created successfully.
+Table 'sales_archive' created successfully.
+Table 'to_be_produced_archive' created successfully.
+Table 'intransit_archive' created successfully.
+Table 'atp_stock_archive' created successfully.
+Table 'transportation_info' created successfully.
+Table 'transportation_info_archive' created successfully.
+Table 'pallet_info' created successfully.
+Table 'user_roles' created successfully.
+Table 'users' created successfully.
+____________________________________________
+15 tables created successfully.

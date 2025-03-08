@@ -1,0 +1,16 @@
+Tables found in the public schema: ['intransit', 'ready', 'sales', 'to_be_produced', 'atp_stock', 'ready_archive', 'sales_archive', 'to_be_produced_archive', 'intransit_archive', 'atp_stock_archive', 'transportation_info', 'transportation_info_archive', 'pallet_info', 'user_roles', 'users']
+Table 'intransit' dropped successfully.
+Table 'ready' dropped successfully.
+Table 'sales' dropped successfully.
+Table 'to_be_produced' dropped successfully.
+Table 'atp_stock' dropped successfully.
+Table 'ready_archive' dropped successfully.
+Table 'sales_archive' dropped successfully.
+Table 'to_be_produced_archive' dropped successfully.
+Table 'intransit_archive' dropped successfully.
+Table 'atp_stock_archive' dropped successfully.
+Table 'transportation_info' dropped successfully.
+Table 'transportation_info_archive' dropped successfully.
+Table 'pallet_info' dropped successfully.
+Table 'user_roles' dropped successfully.
+Table 'users' dropped successfully.
