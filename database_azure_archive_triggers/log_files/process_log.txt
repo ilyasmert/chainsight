@@ -13,7 +13,6 @@
 [2025-03-08 23:16:22] [TABLE: ready] All transactions for ready committed successfully.
 [2025-03-08 23:16:22] [TABLE: ready] Database connection closed for ready.
 
-
 [2025-03-08 23:18:24] [TABLE: ready] Starting data processing for ready.
 [2025-03-08 23:18:24] [TABLE: ready] Found file: ../database_azure_archive_triggers/test_data/week54/hazır.xlsx
 [2025-03-08 23:18:24] [TABLE: ready] Converted ../database_azure_archive_triggers/test_data/week54/hazır.xlsx to ../database_azure_archive_triggers/test_data/week54/ready.csv.
