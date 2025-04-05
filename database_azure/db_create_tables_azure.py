@@ -170,6 +170,11 @@ try:
         userEMail VARCHAR NOT NULL,
         PRIMARY KEY (userId),
         FOREIGN KEY (roleId) REFERENCES user_roles(roleId)
+        );''',
+        'critical_products': '''CREATE TABLE IF NOT EXISTS critical_products (
+            productId VARCHAR NOT NULL,
+            isCritical INTEGER CHECK (isCritical in (0,1)) DEFAULT 0,
+            PRIMARY KEY (productId)
         );'''
     }
 

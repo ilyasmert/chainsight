@@ -78,8 +78,12 @@
   * PRIMARY KEY (transportationId, year, archiveDate)
 
 * **Pallet Info**
-    * productId, palletCapacity, palletWeight, updateDate
-    * PRIMARY KEY (productId, updateDate)
+    * productId, palletCapacity, palletWeight, palletUsed
+    * PRIMARY KEY (productId)
+
+* **Critical Products**
+    * productId, isCritical,  
+    * PRIMARY KEY (productId)
 
 ## 1.4. Tables for General Purposes
 

@@ -119,3 +119,7 @@ ________________________________________________________________________________
         Django version 5.1.7, using settings 'database_backend_integration.settings'
         Starting development server at http://127.0.0.1:8000/
         Quit the server with CONTROL-C.
+
+________________________________________________________________________________
+9.  http://127.0.0.1:8000/api
+10. http://127.0.0.1:8000/admin

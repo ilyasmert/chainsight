@@ -14,5 +14,6 @@ Table 'transportation_info_archive' created successfully.
 Table 'pallet_info' created successfully.
 Table 'user_roles' created successfully.
 Table 'users' created successfully.
+Table 'critical_products' created successfully.
 ____________________________________________
-15 tables created successfully.
+16 tables created successfully.
