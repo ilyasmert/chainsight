@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchSales } from '../services/api';
+import { fetchSales } from '../services/inventoryApi';
 
 const SalesTable = () => {
   const [salesData, setSalesData] = useState([]);

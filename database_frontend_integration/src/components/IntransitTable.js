@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchIntransit } from '../services/api';
+import { fetchIntransit } from '../services/inventoryApi';
 
 const IntransitTable = () => {
   const [intransitData, setIntransitData] = useState([]);

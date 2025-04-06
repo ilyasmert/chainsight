@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchToBeProduced } from '../services/api';
+import { fetchToBeProduced } from '../services/inventoryApi';
 
 const ToBeProducedTable = () => {
   const [data, setData] = useState([]);
