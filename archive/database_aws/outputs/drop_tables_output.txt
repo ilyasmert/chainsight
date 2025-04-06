@@ -1,9 +1,0 @@
-Tables found in the public schema: ['users', 'roles', 'sales', 'to_be_produced', 'user_roles', 'transportation', 'transportation_archive', 'atp_stock']
-Table 'users' dropped successfully.
-Table 'roles' dropped successfully.
-Table 'sales' dropped successfully.
-Table 'to_be_produced' dropped successfully.
-Table 'user_roles' dropped successfully.
-Table 'transportation' dropped successfully.
-Table 'transportation_archive' dropped successfully.
-Table 'atp_stock' dropped successfully.

@@ -1,6 +1,0 @@
-File,Best Model
-intransit.csv,ARIMA
-to_be_produced.csv,ARIMA
-atp_stock.csv,Holt-Winters
-ready.csv,SARIMA
-sales.csv,Holt-Winters

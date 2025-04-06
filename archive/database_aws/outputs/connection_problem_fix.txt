@@ -1,9 +1,0 @@
-Connection error: Connection attempt timed out.
-
-how to fix:
-  * Go to the security group of the RDS instance.
-  * Add a new inbound rule for the security group.
-  * Type: PostgreSQL, Protocol: TCP, Port Range: 5432, Source: Anywhere-IPv4
-  * Save the rule.
-  * This is not a secure way to connect to the database. It is only for testing purposes.
-  * connection is successful.

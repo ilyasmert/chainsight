@@ -101,7 +101,7 @@ class ExcelUploadArchiveView(APIView):
 
 
     """
-    (.venv)(base) ~/Desktop/ceng49x/chainsight_backend git:[data]
+    (.venv)(base) ~/Desktop/ceng49x/backend_integration git:[data]
         curl -X POST http://127.0.0.1:8000/api/inventory/upload-table/ \
             -F "tableName=ready" \
             -F "archivedBy=admin" \

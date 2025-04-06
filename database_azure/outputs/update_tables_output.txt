@@ -1,1 +1,0 @@
-Column 'palletUsed' added to 'pallet_info' table successfully.
