@@ -635,6 +635,47 @@
           }
         }
       ]
+    },
+    {
+  "name": "Upload Excel (Ready Table)",
+  "request": {
+    "method": "POST",
+    "header": [],
+    "body": {
+      "mode": "formdata",
+      "formdata": [
+        {
+          "key": "tableName",
+          "value": "ready",
+          "type": "text"
+        },
+        {
+          "key": "archivedBy",
+          "value": "admin",
+          "type": "text"
+        },
+        {
+          "key": "file",
+          "type": "file",
+          "src": "../database_azure_archive_triggers/test_data/week53/ready.xlsx"
+        }
+      ]
+    },
+    "url": {
+      "raw": "http://127.0.0.1:8000/api/inventory/upload-table/",
+      "protocol": "http",
+      "host": [
+        "127.0.0.1"
+      ],
+      "port": "8000",
+      "path": [
+        "api",
+        "inventory",
+        "upload-table"
+      ]
     }
+  }
+}
+
   ]
 }
