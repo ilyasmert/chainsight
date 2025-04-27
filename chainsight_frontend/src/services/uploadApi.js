@@ -9,6 +9,12 @@ export const uploadExcelFile = async (file, tableName, archivedBy = 'admin') => 
   formData.append('tableName', tableName);
   formData.append('archivedBy', archivedBy);
 
+try {
   const response = await axios.post(UPLOAD_URL, formData);
   return response.data;
+} catch (err) {
+  console.log("Upload error:", err.response?.data || err.message, err);
+  throw err;
+}
+
 };
