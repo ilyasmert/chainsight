@@ -26,24 +26,27 @@ const IntransitTable = () => {
     setFilters({ ...filters, [key]: e.target.value });
   };
 
-  const filteredData = data.filter(row =>
-    row.productid.toLowerCase().includes(filters.productid.toLowerCase()) &&
-    row.weekid.toString().toLowerCase().includes(filters.weekid.toLowerCase()) &&
-    row.year.toString().toLowerCase().includes(filters.year.toLowerCase()) &&
-    row.eta.toLowerCase().includes(filters.eta.toLowerCase()) &&
+const filteredData = data.filter(row =>
+  (row.productid || "").toLowerCase().includes((filters.productid || "").toLowerCase()) &&
+  (row.weekid !== undefined && row.weekid !== null ? row.weekid.toString().toLowerCase() : "")
+    .includes((filters.weekid || "").toLowerCase()) &&
+  (row.year !== undefined && row.year !== null ? row.year.toString().toLowerCase() : "")
+    .includes((filters.year || "").toLowerCase()) &&
+  (row.eta || "").toLowerCase().includes((filters.eta || "").toLowerCase()) &&
+  (
+    filters.quantityValue === "" ||
     (
-      filters.quantityValue === "" ||
-      (
-        filters.quantityOperator === "=" && Number(row.quantity) === Number(filters.quantityValue)
-      ) ||
-      (
-        filters.quantityOperator === ">" && Number(row.quantity) > Number(filters.quantityValue)
-      ) ||
-      (
-        filters.quantityOperator === "<" && Number(row.quantity) < Number(filters.quantityValue)
-      )
+      filters.quantityOperator === "=" && Number(row.quantity) === Number(filters.quantityValue)
+    ) ||
+    (
+      filters.quantityOperator === ">" && Number(row.quantity) > Number(filters.quantityValue)
+    ) ||
+    (
+      filters.quantityOperator === "<" && Number(row.quantity) < Number(filters.quantityValue)
     )
-  );
+  )
+);
+
 
   if (loading) return <div>Loading...</div>;
   if (!data.length) return <div>No data found.</div>;
