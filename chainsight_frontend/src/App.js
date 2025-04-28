@@ -9,6 +9,7 @@ import RunOptimizationPage from "./pages/RunOptimizationPage"; // If you have yo
 import Footer from "./components/Footer";
 import DashboardLayout from "./layouts/DashboardLayout";
 import HomePage from "./pages/HomePage";
+import HelpPage from "./pages/HelpPage";
 import "./App.css";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/upload" element={<UploadWeeklyFilesPage />} />
         <Route path="/variables" element={<UpdateVariablesPage />} />
         <Route path="/optimization" element={<RunOptimizationPage />} />
+        <Route path="/help" element={<HelpPage />} /> {/* <---  HelpPage route */}
       </Routes>
     </DashboardLayout>
   );

@@ -27,17 +27,34 @@ body, html, #root, .app-container {
   min-height: 0;
 }
 
+/* Sidebar Section */
 .sidebar {
   width: 200px;
   background: #23272f;
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Push help to bottom */
   padding: 24px 0;
+  box-sizing: border-box;
+}
+
+.sidebar-links {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px 0;
+  border-top: 1px solid #3e4451;
+}
+
+/* Sidebar Links */
 .sidebar a, .sidebar button {
+  display: block; /* <-- This fixes vertical stacking */
+  width: 100%;    /* Full width clickable area */
   color: #fff;
   text-decoration: none;
   padding: 12px 24px;
@@ -46,20 +63,33 @@ body, html, #root, .app-container {
   text-align: left;
   font-size: 16px;
   border-radius: 5px;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.2s;
 }
 
 .sidebar a.active, .sidebar a:hover, .sidebar button:hover {
   background: #3e4451;
 }
 
+/* Special hover for Help */
+.sidebar .help-link {
+  color: #ff715b;
+}
+
+.sidebar .help-link:hover {
+  color: #ff3b00;
+  transform: translateX(4px);
+  font-weight: bold;
+}
+
+/* Footer Section */
 .footer {
   background: #f8f8f8;
   border-top: 1px solid #000000;
   width: 100%;
-  margin-top: auto; /* Pushes footer to bottom if using flex */
+  margin-top: auto; /* Push footer to bottom */
 }
 
+/* Main Content */
 .main-content {
   flex: 1;
   background: #fafbfc;
@@ -68,15 +98,16 @@ body, html, #root, .app-container {
   overflow-y: auto;
 }
 
+/* Sticky Inventory Page Header */
 .inventory-header-sticky {
   position: sticky;
   top: 0;
   background: #fff;
   z-index: 10;
   padding-top: 18px;
-  /* Add border to visually separate if needed */
 }
 
+/* Sticky Table Headers */
 .sticky-table thead th {
   position: sticky;
   top: 0;
