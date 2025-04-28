@@ -5,6 +5,7 @@ const Sidebar = () => (
   <nav className="sidebar">
     <div className="sidebar-links">
       <NavLink to="/inventory" activeClassName="active">Inventory</NavLink>
+      <NavLink to="/inventory-archive" activeClassName="active">Inventory Archive</NavLink> {/* 🆕 added */}
       <NavLink to="/upload" activeClassName="active">Upload Files</NavLink>
       <NavLink to="/variables" activeClassName="active">Update Variables</NavLink>
       <NavLink to="/optimization" activeClassName="active">Run Optimization</NavLink>
