@@ -16,6 +16,8 @@ from django.core.files.base import ContentFile
 from sqlalchemy import create_engine
 from django.conf import settings
 import pandas as pd
+from .services.optimization_pipeline import OptimizationPipeline
+from .services.lp_model import DEFAULT_PARAMS
 
 def create_viewset(model, serializer):
     class GenericViewSet(viewsets.ModelViewSet):
@@ -108,3 +110,36 @@ class ExcelUploadArchiveView(APIView):
             -F "file=@/Users/kivancfk/Desktop/ceng49x/database_azure_archive_triggers/test_data/week53/ready.xlsx"
     {"message":"ready updated and archived successfully."}%                                                                                    
     """
+
+class OptimizationRunView(APIView):
+    """
+    GET /api/inventory/optimize/
+        ?projection_length=14&truck_per_week=2  …gibi parametreler geçilebilir.
+    Dönen payload:
+        {
+          "lp": {... temel tablolar ...},
+          "critical": {...},
+          "rearrange": {...}
+        }
+    """
+    def get(self, request, *args, **kwargs):
+        # 1) URL query’sinden parametreleri oku  (yoksa default’lar)
+        lp_params = DEFAULT_PARAMS | {
+            k: int(v) for k, v in request.query_params.items()
+                        if k in DEFAULT_PARAMS
+        }
+
+        # 2) Pipeline’i çalıştır
+        pipe = OptimizationPipeline(lp_params=lp_params)
+        pipe.run()
+        result = pipe.results()          # dict – JSON’a gömülebilir
+
+        # 3) DataFrame’leri JSON’a dönüştür (orient="split")
+        def df_to_json(obj):
+            if isinstance(obj, pd.DataFrame):
+                return obj.to_dict(orient="split")
+            return obj
+
+        json_ready = {k: df_to_json(v) for k, v in result.items()}
+
+        return Response(json_ready, status=status.HTTP_200_OK)
