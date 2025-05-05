@@ -2,7 +2,10 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     ReadyViewSet, AtpStockViewSet, IntransitViewSet,
-    ToBeProducedViewSet, SalesViewSet, UsersViewSet, ExcelUploadArchiveView
+    ToBeProducedViewSet, SalesViewSet, UsersViewSet, ExcelUploadArchiveView,
+    ReadyArchiveViewSet, AtpStockArchiveViewSet,
+    IntransitArchiveViewSet, ToBeProducedArchiveViewSet,
+    SalesArchiveViewSet
 )
 
 router = DefaultRouter()
@@ -11,7 +14,17 @@ router.register(r'atp-stock', AtpStockViewSet)
 router.register(r'intransit', IntransitViewSet)
 router.register(r'to-be-produced', ToBeProducedViewSet)
 router.register(r'sales', SalesViewSet)
+
 router.register(r'users', UsersViewSet)
+#router.register(r'excel-upload-archive', ExcelUploadArchiveView)
+
+router.register(r'ready-archive', ReadyArchiveViewSet)
+router.register(r'atp-stock-archive', AtpStockArchiveViewSet)
+router.register(r'intransit-archive', IntransitArchiveViewSet)
+router.register(r'to-be-produced-archive', ToBeProducedArchiveViewSet)
+router.register(r'sales-archive', SalesArchiveViewSet)
+
+
 
 urlpatterns = [
     path('', include(router.urls)),

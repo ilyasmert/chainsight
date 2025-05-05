@@ -1,11 +1,16 @@
 from rest_framework import viewsets
 from .models import (
-    Ready, AtpStock, Intransit, ToBeProduced, Sales, Users
+    Ready, AtpStock, Intransit, ToBeProduced, Sales, Users,
+    ReadyArchive, AtpStockArchive, IntransitArchive, ToBeProducedArchive, SalesArchive
 )
 from .serializers import (
     ReadySerializer, AtpStockSerializer, IntransitSerializer,
-    ToBeProducedSerializer, SalesSerializer, UsersSerializer
+    ToBeProducedSerializer, SalesSerializer, UsersSerializer,
+    ReadyArchiveSerializer, AtpStockArchiveSerializer,
+    IntransitArchiveSerializer, ToBeProducedArchiveSerializer,
+    SalesArchiveSerializer
 )
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -28,8 +33,14 @@ AtpStockViewSet = create_viewset(AtpStock, AtpStockSerializer)
 IntransitViewSet = create_viewset(Intransit, IntransitSerializer)
 ToBeProducedViewSet = create_viewset(ToBeProduced, ToBeProducedSerializer)
 SalesViewSet = create_viewset(Sales, SalesSerializer)
-UsersViewSet = create_viewset(Users, UsersSerializer)
 
+ReadyArchiveViewSet= create_viewset(ReadyArchive, ReadyArchiveSerializer)
+AtpStockArchiveViewSet = create_viewset(AtpStockArchive, AtpStockArchiveSerializer)
+IntransitArchiveViewSet = create_viewset(IntransitArchive, IntransitArchiveSerializer)
+ToBeProducedArchiveViewSet = create_viewset(ToBeProducedArchive, ToBeProducedArchiveSerializer)
+SalesArchiveViewSet = create_viewset(SalesArchive, SalesArchiveSerializer)
+
+UsersViewSet = create_viewset(Users, UsersSerializer)
 
 # Table mapping
 ALLOWED_TABLES = {
