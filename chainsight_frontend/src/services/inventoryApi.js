@@ -51,3 +51,53 @@ export const fetchToBeProduced = async () => {
     throw error;
   }
 };
+
+export const fetchReadyArchive = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/ready-archive/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching ready archive data:', error);
+    throw error;
+  }
+}
+
+export const fetchAtpStockArchive = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/atp-stock-archive/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching ATP stock archive data:', error);
+    throw error;
+  }
+};
+
+export const fetchIntransitArchive = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/intransit-archive/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching intransit archive data:', error);
+    throw error;
+  }
+};
+
+export const fetchSalesArchive = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/sales-archive/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching sales archive data:', error);
+    throw error;
+  }
+};
+
+export const fetchToBeProducedArchive = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/to-be-produced-archive/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching To Be Produced archive data:', error);
+    throw error;
+  }
+};
