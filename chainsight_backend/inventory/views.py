@@ -21,6 +21,8 @@ from django.core.files.base import ContentFile
 from sqlalchemy import create_engine
 from django.conf import settings
 import pandas as pd
+from rest_framework.parsers import MultiPartParser
+
 
 def create_viewset(model, serializer):
     class GenericViewSet(viewsets.ModelViewSet):
@@ -119,3 +121,32 @@ class ExcelUploadArchiveView(APIView):
             -F "file=@/Users/kivancfk/Desktop/ceng49x/database_azure_archive_triggers/test_data/week53/ready.xlsx"
     {"message":"ready updated and archived successfully."}%                                                                                    
     """
+
+class UpdatePalletInfoView(APIView):
+    parser_classes = [MultiPartParser]
+
+    def post(self, request):
+        file_obj = request.FILES.get('file')
+        if not file_obj:
+            return Response({"error": "No file uploaded."}, status=400)
+
+        try:
+            df = pd.read_excel(file_obj)
+
+            with connection.cursor() as cursor:
+                cursor.execute("DELETE FROM pallet_info")
+
+                for _, row in df.iterrows():
+                    cursor.execute("""
+                        INSERT INTO pallet_info (productid, palletcapacity, palletweight, palletused)
+                        VALUES (%s, %s, %s, %s)
+                    """, [
+                        row['productid'],
+                        row['palletcapacity'],
+                        row['palletweight'],
+                        row['palletused']
+                    ])
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+        return Response({"status": "success"})

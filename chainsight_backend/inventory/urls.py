@@ -5,7 +5,7 @@ from .views import (
     ToBeProducedViewSet, SalesViewSet, UsersViewSet, ExcelUploadArchiveView,
     ReadyArchiveViewSet, AtpStockArchiveViewSet,
     IntransitArchiveViewSet, ToBeProducedArchiveViewSet,
-    SalesArchiveViewSet
+    SalesArchiveViewSet, UpdatePalletInfoView
 )
 
 router = DefaultRouter()
@@ -16,7 +16,6 @@ router.register(r'to-be-produced', ToBeProducedViewSet)
 router.register(r'sales', SalesViewSet)
 
 router.register(r'users', UsersViewSet)
-#router.register(r'excel-upload-archive', ExcelUploadArchiveView)
 
 router.register(r'ready-archive', ReadyArchiveViewSet)
 router.register(r'atp-stock-archive', AtpStockArchiveViewSet)
@@ -29,4 +28,6 @@ router.register(r'sales-archive', SalesArchiveViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('upload-table/', ExcelUploadArchiveView.as_view(), name='upload-table'),
+    path('update_pallet_info/', UpdatePalletInfoView.as_view(), name='update-pallet-info'),
+
 ]
