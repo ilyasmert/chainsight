@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "rest_framework",  # If you're using Django REST Framework
     "inventory",  # <-- Add this if missing
     "corsheaders",
+    "django_extensions",  # Optional, for debugging and shell_plus
 ]
 
 MIDDLEWARE = [

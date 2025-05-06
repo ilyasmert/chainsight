@@ -2,7 +2,8 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     ReadyViewSet, AtpStockViewSet, IntransitViewSet,
-    ToBeProducedViewSet, SalesViewSet, UsersViewSet, ExcelUploadArchiveView
+    ToBeProducedViewSet, SalesViewSet, UsersViewSet, ExcelUploadArchiveView,
+    OptimizationRunView
 )
 
 router = DefaultRouter()
@@ -16,4 +17,5 @@ router.register(r'users', UsersViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     path('upload-table/', ExcelUploadArchiveView.as_view(), name='upload-table'),
+    path('optimize/', OptimizationRunView.as_view(), name='optimize'),
 ]
