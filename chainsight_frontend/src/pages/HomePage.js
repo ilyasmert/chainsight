@@ -7,7 +7,7 @@ const HomePage = () => (
     justifyContent: 'center',
     height: '60vh',
     fontWeight: 700,
-    fontSize: 32
+    fontSize: 48
   }}>
     Welcome to chAInSight!
   </div>
