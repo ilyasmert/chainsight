@@ -1,7 +1,7 @@
-from chainsight_backend.inventory.services.data_loader import DataLoader
-from chainsight_backend.inventory.services.lp_model import LPModel
-from chainsight_backend.inventory.services.production_suggestion import ProductionSuggestion
-from chainsight_backend.inventory.config.dataframe_config import DF_CONFIG
+from .data_loader import DataLoader
+from .lp_model import LPModel
+from .production_suggestion import ProductionSuggestion
+from ..config.dataframe_config import DF_CONFIG
 
 class OptimizationPipeline:
     """

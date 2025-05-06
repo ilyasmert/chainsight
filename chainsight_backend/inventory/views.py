@@ -15,6 +15,9 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from sqlalchemy import create_engine
 from django.conf import settings
+import io
+import zipfile
+from django.http import HttpResponse
 import pandas as pd
 from .services.optimization_pipeline import OptimizationPipeline
 from .services.lp_model import DEFAULT_PARAMS
@@ -114,32 +117,81 @@ class ExcelUploadArchiveView(APIView):
 class OptimizationRunView(APIView):
     """
     GET /api/inventory/optimize/
-        ?projection_length=14&truck_per_week=2  …gibi parametreler geçilebilir.
-    Dönen payload:
-        {
-          "lp": {... temel tablolar ...},
-          "critical": {...},
-          "rearrange": {...}
-        }
+        ?projection_length=14&truck_per_week=2  ...etc. parameters can be passed.
+    Returns a zip file named `optimization_output.zip` containing two Excel files:
+    1. `optimization_results.xlsx`: Contains sheets for truck_pallets, ship_pallets,
+                                     truck_m2, ship_m2, stock, and shortage.
+    2. `production_suggestions.xlsx`: Contains sheets for critical_products and
+                                       suggested_rearrangements.
     """
     def get(self, request, *args, **kwargs):
-        # 1) URL query’sinden parametreleri oku  (yoksa default’lar)
-        lp_params = DEFAULT_PARAMS | {
-            k: int(v) for k, v in request.query_params.items()
-                        if k in DEFAULT_PARAMS
-        }
+        # 1) Parse URL query parameters (or use defaults)
+        lp_params = DEFAULT_PARAMS.copy() # Start with defaults
+        for key, value in request.query_params.items():
+            if key in DEFAULT_PARAMS:
+                try:
+                    # Attempt to convert to the type of the default parameter
+                    param_type = type(DEFAULT_PARAMS[key])
+                    lp_params[key] = param_type(value)
+                except ValueError:
+                    # Handle cases where conversion might fail, e.g., for non-integer params
+                    # Or simply keep it as string if that's acceptable for some params
+                    # For this example, assuming most numeric params are int as in original
+                    if param_type == int:
+                         lp_params[key] = int(value)
+                    elif param_type == float:
+                         lp_params[key] = float(value)
+                    else:
+                         lp_params[key] = value
 
-        # 2) Pipeline’i çalıştır
-        pipe = OptimizationPipeline(lp_params=lp_params)
-        pipe.run()
-        result = pipe.results()          # dict – JSON’a gömülebilir
 
-        # 3) DataFrame’leri JSON’a dönüştür (orient="split")
-        def df_to_json(obj):
-            if isinstance(obj, pd.DataFrame):
-                return obj.to_dict(orient="split")
-            return obj
+        try:
+            # 2) Run the optimization pipeline
+            pipe = OptimizationPipeline(lp_params=lp_params)
+            result = pipe.run()
 
-        json_ready = {k: df_to_json(v) for k, v in result.items()}
+            # Helper function to create an Excel file in memory from a dictionary of DataFrames
+            def create_excel_in_memory(dfs_dict: dict[str, pd.DataFrame | None]) -> bytes:
+                excel_buffer = io.BytesIO()
+                with pd.ExcelWriter(excel_buffer, engine='openpyxl') as writer:
+                    for sheet_name, df in dfs_dict.items():
+                        if isinstance(df, pd.DataFrame):
+                            df.to_excel(writer, sheet_name=sheet_name, index=True)
+                excel_buffer.seek(0)
+                return excel_buffer.getvalue()
 
-        return Response(json_ready, status=status.HTTP_200_OK)
+            # Prepare DataFrames for the first Excel file
+            optimization_dfs = {
+                "truck_pallets": result.get("truck_pallets"),
+                "ship_pallets": result.get("ship_pallets"),
+                "truck_m2": result.get("truck_m2"),
+                "ship_m2": result.get("ship_m2"),
+                "stock": result.get("stock"),
+                "shortage": result.get("shortage"),
+            }
+            excel_data_optimization_bytes = create_excel_in_memory(optimization_dfs)
+
+            # Prepare DataFrames for the second Excel file
+            suggestion_dfs = {
+                "critical_products": result.get("critical_products"),
+                "suggested_rearrangements": result.get("suggested_rearrangements"),
+            }
+            excel_data_suggestions_bytes = create_excel_in_memory(suggestion_dfs)
+
+            # Create a zip file in memory
+            zip_buffer = io.BytesIO()
+            with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+                zip_file.writestr("optimization_results.xlsx", excel_data_optimization_bytes)
+                zip_file.writestr("production_suggestions.xlsx", excel_data_suggestions_bytes)
+            zip_buffer.seek(0)
+
+            # Prepare HTTP response for the zip file
+            response = HttpResponse(zip_buffer.getvalue(), content_type='application/zip')
+            response['Content-Disposition'] = 'attachment; filename="optimization_output.zip"'
+            return response
+
+        except Exception as e:
+            # Log the error (e.g., import logging; logging.error(f"Error generating optimization report: {e}"))
+            return Response(
+                {"error": f"Failed to generate optimization report: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
