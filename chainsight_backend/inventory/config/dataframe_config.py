@@ -1,4 +1,4 @@
-from chainsight_backend.inventory.models import (AtpStock, PalletInfo, Intransit, Sales, Ready, ToBeProduced)
+from inventory.models import (AtpStock, PalletInfo, Intransit, Sales, Ready, ToBeProduced)
 
 DF_CONFIG = {
     "atp_stock": {
