@@ -136,24 +136,34 @@ class UpdatePalletInfoView(APIView):
 
         try:
             df = pd.read_excel(file_obj)
+            df.columns = df.columns.str.strip().str.lower()
+            print("📊 Cleaned columns:", df.columns.tolist())
+
+            required_cols = ['productid', 'palletcapacity', 'palletweight', 'palletused']
+            if not all(col in df.columns for col in required_cols):
+                return Response({
+                    "error": f"Missing columns. Found: {df.columns.tolist()}"
+                }, status=400)
+
+            rows_to_insert = df[required_cols].to_numpy().tolist()
+            inserted_rows = len(rows_to_insert)
 
             with connection.cursor() as cursor:
-                cursor.execute("DELETE FROM pallet_info")
+                cursor.execute("TRUNCATE TABLE pallet_info RESTART IDENTITY CASCADE")
+                cursor.executemany("""
+                    INSERT INTO pallet_info (productid, palletcapacity, palletweight, palletused)
+                    VALUES (%s, %s, %s, %s)
+                """, rows_to_insert)
 
-                for _, row in df.iterrows():
-                    cursor.execute("""
-                        INSERT INTO pallet_info (productid, palletcapacity, palletweight, palletused)
-                        VALUES (%s, %s, %s, %s)
-                    """, [
-                        row['productid'],
-                        row['palletcapacity'],
-                        row['palletweight'],
-                        row['palletused']
-                    ])
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             return Response({"error": str(e)}, status=500)
 
-        return Response({"status": "success"})
+        return Response({
+            "status": "success",
+            "inserted_rows": inserted_rows
+        }, status=200)
 
 class OptimizationRunView(APIView):
     """

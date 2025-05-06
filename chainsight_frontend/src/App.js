@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
-import Header from "./components/Header";
+//import Sidebar from "./components/Sidebar";
+//import Header from "./components/Header";
 import InventoryPage from "./pages/InventoryPage";
 import UploadWeeklyFilesPage from "./pages/UploadWeeklyFilesPage";
 import UpdateVariablesPage from "./pages/UpdateVariablesPage";
 import RunOptimizationPage from "./pages/RunOptimizationPage"; // If you have your main styles here
-import Footer from "./components/Footer";
+//import Footer from "./components/Footer";
 import DashboardLayout from "./layouts/DashboardLayout";
 import HomePage from "./pages/HomePage";
 import HelpPage from "./pages/HelpPage";

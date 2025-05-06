@@ -1,6 +1,8 @@
 import pandas as pd
-from chainsight_backend.inventory.utils.data_processor import process_dataframe
-from chainsight_backend.inventory.config.dataframe_config import DF_CONFIG
+#from chainsight_backend.inventory.utils.data_processor import process_dataframe
+from ..utils.data_processor import process_dataframe
+#from chainsight_backend.inventory.config.dataframe_config import DF_CONFIG
+from ..config.dataframe_config import DF_CONFIG
 
 class DataLoader:
     """

@@ -48,7 +48,7 @@ const UpdateVariablesPage = () => {
     formData.append('file', file);
 
     try {
-      await axios.post('http://localhost:8000/api/update_pallet_info/', formData);
+      await axios.post('http://localhost:8000/api/inventory/update_pallet_info/', formData);
       setUploadStatus("✅ Upload successful!");
     } catch (error) {
       setUploadStatus("❌ Upload failed!");
