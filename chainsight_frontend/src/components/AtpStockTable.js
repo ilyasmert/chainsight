@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { fetchAtpStock } from '../services/inventoryApi'; // Adjust as needed
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import AtpStockPieChart from './AtpStockPieChart'; // Import the reusable component
 
 const quantityOperators = ["=", ">", "<"];
-const COLORS = ['#FF8042', '#00C49F']; // Colors for pie chart segments (negative, non-negative)
+// COLORS constant is removed as it's in AtpStockPieChart
 
 const AtpStockTable = () => {
   const [data, setData] = useState([]);
@@ -18,9 +18,15 @@ const AtpStockTable = () => {
   const [viewMode, setViewMode] = useState('table'); // 'table' or 'chart'
 
   useEffect(() => {
+    setLoading(true);
     fetchAtpStock().then(result => {
       setData(result);
       setLoading(false);
+    }).catch(error => {
+      console.error("Failed to fetch ATP stock:", error);
+      setData([]);
+      setLoading(false);
+      // Optionally, set an error state here if you want to display it
     });
   }, []);
 
@@ -40,20 +46,9 @@ const AtpStockTable = () => {
     )
   );
 
-  const getPieChartData = () => {
-    if (!filteredData.length) return [];
-    const negativeQuantityCount = filteredData.filter(item => Number(item.quantity) < 0).length;
-    const nonNegativeQuantityCount = filteredData.length - negativeQuantityCount;
+  // getPieChartData function is removed as its logic is in AtpStockPieChart
 
-    return [
-      { name: 'Quantity < 0', value: negativeQuantityCount },
-      { name: 'Quantity >= 0', value: nonNegativeQuantityCount },
-    ];
-  };
-
-  const pieChartData = getPieChartData();
-
-  if (loading) return <div>Loading...</div>;
+  if (loading && data.length === 0) return <div>Loading...</div>; // Show loading only if data is not yet available
 
   return (
     <div>
@@ -74,8 +69,9 @@ const AtpStockTable = () => {
 
       {viewMode === 'table' && (
         <>
-          {!filteredData.length && !loading && <div>No data found for current filters.</div>}
-          {filteredData.length > 0 && (
+          {loading && <p>Loading table data...</p>}
+          {!loading && !filteredData.length && <div>No data found for current filters.</div>}
+          {!loading && filteredData.length > 0 && (
             <div style={{
               maxHeight: 400,
               overflowY: 'auto',
@@ -154,39 +150,11 @@ const AtpStockTable = () => {
       )}
 
       {viewMode === 'chart' && (
-        <>
-          {!pieChartData.find(d => d.value > 0) && !loading && <div>No data to display in chart for current filters.</div>}
-          {pieChartData.find(d => d.value > 0) && (
-            <div style={{ width: '100%', height: 400, background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
-              <h3 style={{ textAlign: 'center', marginBottom: 20 }}>Product Quantity Distribution</h3>
-              <ResponsiveContainer>
-                <PieChart>
-                  <Pie
-                    data={pieChartData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                    outerRadius={120}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {pieChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value, name) => [`${value} products`, name]} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-                <div style={{ marginTop: 20, textAlign: 'center', fontSize: 14 }}>
-                  <p><strong># of Products {'<'} 0:</strong> {pieChartData[0]?.value || 0}</p>
-                  <p><strong># of Products {'>='} 0:</strong> {pieChartData[1]?.value || 0}</p>
-                  <p><strong>Total Products:</strong> {filteredData.length}</p>
-                </div>
-            </div>
-          )}
-        </>
+        <div style={{ width: '100%', background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
+          <h3 style={{ textAlign: 'center', marginBottom: 20 }}>Product Quantity Distribution</h3>
+          {/* Use the AtpStockPieChart component */}
+          <AtpStockPieChart data={filteredData} loading={loading} error={null} />
+        </div>
       )}
     </div>
   );
