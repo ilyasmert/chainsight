@@ -151,7 +151,7 @@ const AtpStockTable = () => {
 
       {viewMode === 'chart' && (
         <div style={{ width: '100%', background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
-          <h3 style={{ textAlign: 'center', marginBottom: 20 }}>Product Quantity Distribution</h3>
+          <h3 style={{ textAlign: 'center', marginBottom: 20 }}>ATP Stock Overview</h3>
           {/* Use the AtpStockPieChart component */}
           <AtpStockPieChart data={filteredData} loading={loading} error={null} />
         </div>

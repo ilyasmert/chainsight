@@ -1,32 +1,37 @@
 import React from 'react';
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const COLORS = ['#FF8042', '#00C49F']; // Colors for pie chart segments (negative, non-negative)
+const COLORS = ['#228B22', '#4F4F4F', '#FF0000']; // Red for negative, dark gray for zero, soft green for positive
 
 const AtpStockPieChart = ({ data, loading, error }) => {
   const getPieChartData = () => {
     if (!data || data.length === 0) return [];
+
     const negativeQuantityCount = data.filter(item => Number(item.quantity) < 0).length;
-    const nonNegativeQuantityCount = data.length - negativeQuantityCount;
+    const zeroQuantityCount = data.filter(item => Number(item.quantity) === 0).length;
+    const positiveQuantityCount = data.filter(item => Number(item.quantity) > 0).length;
 
     return [
-      { name: 'Quantity < 0', value: negativeQuantityCount },
-      { name: 'Quantity >= 0', value: nonNegativeQuantityCount },
+        { name: 'Positive Stock', value: positiveQuantityCount },
+        { name: 'Zero Stock', value: zeroQuantityCount },
+        { name: 'Negative Stock', value: negativeQuantityCount },
+
+
     ];
   };
 
   const pieData = getPieChartData();
   const totalProducts = data ? data.length : 0;
+  const week = data && data.length > 0 ? data[0].weekid : 'N/A';
+  const year = data && data.length > 0 ? data[0].year : 'N/A';
 
   if (loading) return <p>Loading chart data...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
   if (!data || data.length === 0) return <p>No data available for chart.</p>;
-  // Check if there's any data to display in the pie chart itself
   if (!pieData.find(d => d.value > 0)) return <p>No data to display in chart for current selection.</p>;
 
-
   return (
-    <>
+    <div>
       <ResponsiveContainer width="100%" height={300}>
         <PieChart>
           <Pie
@@ -47,12 +52,11 @@ const AtpStockPieChart = ({ data, loading, error }) => {
           <Legend />
         </PieChart>
       </ResponsiveContainer>
-      <div style={{ marginTop: 10, textAlign: 'center', fontSize: 14 }}>
-        <p><strong># of Products {'<'} 0:</strong> {pieData[0]?.value || 0}</p>
-        <p><strong># of Products {'>='} 0:</strong> {pieData[1]?.value || 0}</p>
+      <div style={{ marginTop: 10, textAlign: 'left', fontSize: 14 }}>
         <p><strong>Total Products:</strong> {totalProducts}</p>
+        <p><strong>Week:</strong> {week}, <strong>Year:</strong> {year}</p>
       </div>
-    </>
+    </div>
   );
 };
 
