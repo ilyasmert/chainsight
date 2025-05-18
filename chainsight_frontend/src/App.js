@@ -8,7 +8,6 @@ import UpdateVariablesPage from "./pages/UpdateVariablesPage";
 import RunOptimizationPage from "./pages/RunOptimizationPage"; // If you have your main styles here
 //import Footer from "./components/Footer";
 import DashboardLayout from "./layouts/DashboardLayout";
-import HomePage from "./pages/HomePage"; // You might replace this or keep it if it's different from Dashboard
 import HelpPage from "./pages/HelpPage";
 import InventoryArchivePage from "./pages/InventoryArchivePage";
 import DashboardPage from "./components/DashboardPage"; // Ensure this path is correct
