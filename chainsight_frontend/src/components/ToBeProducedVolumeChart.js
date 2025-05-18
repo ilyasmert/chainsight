@@ -1,9 +1,9 @@
-import React, { useMemo, useEffect } from 'react';
+import React, { useMemo, useEffect, useState, useRef } from 'react';
 import {
   parseISO,
   format,
   startOfWeek,
-  endOfWeek,
+  endOfWeek
 } from 'date-fns';
 import {
   BarChart,
@@ -13,7 +13,7 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer,
+  ResponsiveContainer
 } from 'recharts';
 
 const processDataForChart = (toBeProducedData) => {
@@ -34,11 +34,13 @@ const processDataForChart = (toBeProducedData) => {
       if (!isNaN(volume)) {
         if (weeklyVolumes[weekLabel]) {
           weeklyVolumes[weekLabel].totalVolume += volume;
+          weeklyVolumes[weekLabel].rawItems.push(item);
         } else {
           weeklyVolumes[weekLabel] = {
             week: weekLabel,
             totalVolume: volume,
             startDate,
+            rawItems: [item]
           };
         }
       }
@@ -63,9 +65,26 @@ const ToBeProducedVolumeChart = ({ data, loading, error }) => {
   const latestWeek = data?.[0]?.weekid || '-';
   const latestYear = data?.[0]?.year || '-';
 
+  const [selectedWeekData, setSelectedWeekData] = useState(null);
+  const [selectedWeekLabel, setSelectedWeekLabel] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const modalRef = useRef(null);
+
   useEffect(() => {
-    console.log('Raw To-Be-Produced data:', data);
-  }, [data]);
+    const handleClickOutside = (event) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setModalVisible(false);
+      }
+    };
+
+    if (modalVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalVisible]);
 
   if (loading) return <p>Loading chart data...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
@@ -74,7 +93,7 @@ const ToBeProducedVolumeChart = ({ data, loading, error }) => {
     return <p>No meaningful data to display.</p>;
 
   return (
-    <div style={{ width: '100%', background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
+    <div style={{ position: 'relative', zIndex: 1 }}>
       <h2 style={{ textAlign: 'center', marginBottom: 20 }}>Weekly To-Be-Produced Volumes</h2>
       <ResponsiveContainer width="100%" height={400}>
         <BarChart
@@ -93,17 +112,21 @@ const ToBeProducedVolumeChart = ({ data, loading, error }) => {
             width={40}
             tick={{ dx: -10, fontSize: 12 }}
             tickFormatter={(value) => Math.round(value)}
-            label={{
-              value: '',
-              angle: -90,
-              position: 'outsideLeft',
-              offset: 10,
-              dy: -10,
-            }}
+            label={{ value: '', angle: -90, position: 'outsideLeft', offset: 10, dy: -10 }}
           />
           <Tooltip formatter={(value) => [`${Math.round(value)} m²`, "Total Volume"]} />
           <Legend verticalAlign="top" height={36} />
-          <Bar dataKey="totalVolume" fill="#82ca9d" name="Total Volume (m²)" />
+          <Bar
+            dataKey="totalVolume"
+            fill="#82ca9d"
+            name="Total Volume (m²)"
+            onClick={(data, index) => {
+              const clicked = chartData[index];
+              setSelectedWeekData(clicked.rawItems);
+              setSelectedWeekLabel(clicked.week);
+              setModalVisible(true);
+            }}
+          />
         </BarChart>
       </ResponsiveContainer>
 
@@ -115,6 +138,52 @@ const ToBeProducedVolumeChart = ({ data, loading, error }) => {
           <strong>Week:</strong> {latestWeek}, <strong>Year:</strong> {latestYear}
         </p>
       </div>
+
+      {/* Modal + background overlay */}
+      {modalVisible && (
+        <>
+          {/* Dark overlay */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
+            zIndex: 999
+          }} />
+
+          {/* Modal */}
+          <div
+            ref={modalRef}
+            style={{
+              position: 'absolute',
+              top: '20%',
+              left: '50%',
+              transform: 'translate(-50%, -20%)',
+              background: '#fff',
+              border: '1px solid #ccc',
+              borderRadius: 8,
+              padding: 20,
+              boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
+              zIndex: 1000,
+              maxHeight: 400,
+              overflowY: 'auto',
+              minWidth: 320
+            }}
+          >
+            <h3>Products to be produced in: <span style={{ color: '#555' }}>{selectedWeekLabel}</span></h3>
+            <ul>
+              {selectedWeekData?.map((item, idx) => (
+                <li key={idx}>
+                  {item.productname || item.productid}: {Math.round(item.quantity)} m²
+                </li>
+              ))}
+            </ul>
+            <button onClick={() => setModalVisible(false)}>Close</button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

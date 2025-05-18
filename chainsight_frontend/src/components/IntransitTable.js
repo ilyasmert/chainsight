@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchIntransit } from '../services/inventoryApi';
+import IntransitVolumeChart from './IntransitVolumeChart';
 
 const quantityOperators = ["=", ">", "<"];
 
@@ -14,128 +15,156 @@ const IntransitTable = () => {
     eta: "",
   });
   const [loading, setLoading] = useState(true);
+  const [viewMode, setViewMode] = useState('table'); // 'table' | 'chart'
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchIntransit().then(result => {
-      setData(result);
-      setLoading(false);
-    });
+    fetchIntransit()
+      .then(result => {
+        setData(result);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch Intransit data:", err);
+        setError("Failed to load data.");
+        setData([]);
+        setLoading(false);
+      });
   }, []);
 
   const handleFilterChange = (e, key) => {
     setFilters({ ...filters, [key]: e.target.value });
   };
 
-const filteredData = data.filter(row =>
-  (row.productid || "").toLowerCase().includes((filters.productid || "").toLowerCase()) &&
-  (row.weekid !== undefined && row.weekid !== null ? row.weekid.toString().toLowerCase() : "")
-    .includes((filters.weekid || "").toLowerCase()) &&
-  (row.year !== undefined && row.year !== null ? row.year.toString().toLowerCase() : "")
-    .includes((filters.year || "").toLowerCase()) &&
-  (row.eta || "").toLowerCase().includes((filters.eta || "").toLowerCase()) &&
-  (
-    filters.quantityValue === "" ||
+  const filteredData = data.filter(row =>
+    (row.productid || "").toLowerCase().includes((filters.productid || "").toLowerCase()) &&
+    (row.weekid !== undefined && row.weekid !== null ? row.weekid.toString().toLowerCase() : "").includes((filters.weekid || "").toLowerCase()) &&
+    (row.year !== undefined && row.year !== null ? row.year.toString().toLowerCase() : "").includes((filters.year || "").toLowerCase()) &&
+    (row.eta || "").toLowerCase().includes((filters.eta || "").toLowerCase()) &&
     (
-      filters.quantityOperator === "=" && Number(row.quantity) === Number(filters.quantityValue)
-    ) ||
-    (
-      filters.quantityOperator === ">" && Number(row.quantity) > Number(filters.quantityValue)
-    ) ||
-    (
-      filters.quantityOperator === "<" && Number(row.quantity) < Number(filters.quantityValue)
+      filters.quantityValue === "" ||
+      (filters.quantityOperator === "=" && Number(row.quantity) === Number(filters.quantityValue)) ||
+      (filters.quantityOperator === ">" && Number(row.quantity) > Number(filters.quantityValue)) ||
+      (filters.quantityOperator === "<" && Number(row.quantity) < Number(filters.quantityValue))
     )
-  )
-);
-
+  );
 
   if (loading) return <div>Loading...</div>;
-  if (!data.length) return <div>No data found.</div>;
 
-  // Table inside scrollable container for sticky headers!
   return (
-    <div style={{
-      maxHeight: 400,
-      overflowY: 'auto',
-      background: '#fff',
-      borderRadius: 8,
-      boxShadow: '0 1px 4px #eee'
-    }}>
-      <table className="sticky-table" style={{ width: "100%", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th>
-              Product ID<br />
-              <input
-                type="text"
-                value={filters.productid}
-                onChange={e => handleFilterChange(e, "productid")}
-                placeholder="Filter Product ID"
-                style={inputStyle}
-              />
-            </th>
-            <th>
-              Quantity<br />
-              <select
-                value={filters.quantityOperator}
-                onChange={e => handleFilterChange(e, "quantityOperator")}
-                style={{ width: 42, marginRight: 4, fontSize: 13, padding: "2px 4px", borderRadius: 4 }}
-              >
-                {quantityOperators.map(op => (
-                  <option key={op} value={op}>{op}</option>
-                ))}
-              </select>
-              <input
-                type="number"
-                value={filters.quantityValue}
-                onChange={e => handleFilterChange(e, "quantityValue")}
-                placeholder="Value"
-                style={{ ...inputStyle, width: 60 }}
-              />
-            </th>
-            <th>
-              Week ID<br />
-              <input
-                type="text"
-                value={filters.weekid}
-                onChange={e => handleFilterChange(e, "weekid")}
-                placeholder="Filter Week ID"
-                style={inputStyle}
-              />
-            </th>
-            <th>
-              Year<br />
-              <input
-                type="text"
-                value={filters.year}
-                onChange={e => handleFilterChange(e, "year")}
-                placeholder="Filter Year"
-                style={inputStyle}
-              />
-            </th>
-            <th>
-              ETA<br />
-              <input
-                type="text"
-                value={filters.eta}
-                onChange={e => handleFilterChange(e, "eta")}
-                placeholder="Filter ETA"
-                style={inputStyle}
-              />
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredData.map((row, i) => (
-            <tr key={i} style={{ borderBottom: "1px solid #eee" }}>
-              <td style={cellStyle}>{row.productid}</td>
-              <td style={cellStyle}>{row.quantity}</td>
-              <td style={cellStyle}>{row.weekid}</td>
-              <td style={cellStyle}>{row.year}</td>
-              <td style={cellStyle}>{row.eta}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div>
+      <div style={{ marginBottom: 16, display: 'flex', gap: '10px' }}>
+        <button
+          onClick={() => setViewMode('table')}
+          style={viewMode === 'table' ? activeButtonStyle : buttonStyle}
+        >
+          View Table
+        </button>
+        <button
+          onClick={() => setViewMode('chart')}
+          style={viewMode === 'chart' ? activeButtonStyle : buttonStyle}
+        >
+          View Chart
+        </button>
+      </div>
+
+      {viewMode === 'table' && (
+        <>
+          {!filteredData.length && <div>No data found for current filters.</div>}
+          {filteredData.length > 0 && (
+            <div style={{
+              maxHeight: 400,
+              overflowY: 'auto',
+              background: '#fff',
+              borderRadius: 8,
+              boxShadow: '0 1px 4px #eee'
+            }}>
+              <table className="sticky-table" style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead>
+                  <tr>
+                    <th>
+                      Product ID<br />
+                      <input
+                        type="text"
+                        value={filters.productid}
+                        onChange={e => handleFilterChange(e, "productid")}
+                        placeholder="Filter Product ID"
+                        style={inputStyle}
+                      />
+                    </th>
+                    <th>
+                      Quantity<br />
+                      <select
+                        value={filters.quantityOperator}
+                        onChange={e => handleFilterChange(e, "quantityOperator")}
+                        style={{ width: 42, marginRight: 4, fontSize: 13, padding: "2px 4px", borderRadius: 4 }}
+                      >
+                        {quantityOperators.map(op => (
+                          <option key={op} value={op}>{op}</option>
+                        ))}
+                      </select>
+                      <input
+                        type="number"
+                        value={filters.quantityValue}
+                        onChange={e => handleFilterChange(e, "quantityValue")}
+                        placeholder="Value"
+                        style={{ ...inputStyle, width: 60 }}
+                      />
+                    </th>
+                    <th>
+                      Week ID<br />
+                      <input
+                        type="text"
+                        value={filters.weekid}
+                        onChange={e => handleFilterChange(e, "weekid")}
+                        placeholder="Filter Week ID"
+                        style={inputStyle}
+                      />
+                    </th>
+                    <th>
+                      Year<br />
+                      <input
+                        type="text"
+                        value={filters.year}
+                        onChange={e => handleFilterChange(e, "year")}
+                        placeholder="Filter Year"
+                        style={inputStyle}
+                      />
+                    </th>
+                    <th>
+                      ETA<br />
+                      <input
+                        type="text"
+                        value={filters.eta}
+                        onChange={e => handleFilterChange(e, "eta")}
+                        placeholder="Filter ETA"
+                        style={inputStyle}
+                      />
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredData.map((row, i) => (
+                    <tr key={i} style={{ borderBottom: "1px solid #eee" }}>
+                      <td style={cellStyle}>{row.productid}</td>
+                      <td style={cellStyle}>{row.quantity}</td>
+                      <td style={cellStyle}>{row.weekid}</td>
+                      <td style={cellStyle}>{row.year}</td>
+                      <td style={cellStyle}>{row.eta}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      )}
+
+      {viewMode === 'chart' && (
+        <div style={{ width: '100%', background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
+          <IntransitVolumeChart data={filteredData} loading={loading} error={error} />
+        </div>
+      )}
     </div>
   );
 };
@@ -152,6 +181,21 @@ const inputStyle = {
 const cellStyle = {
   padding: 8,
   background: '#fff'
+};
+
+const buttonStyle = {
+  padding: '8px 16px',
+  fontSize: '14px',
+  cursor: 'pointer',
+  border: '1px solid #ddd',
+  borderRadius: '4px',
+  background: '#f9f9f9',
+};
+
+const activeButtonStyle = {
+  ...buttonStyle,
+  background: '#e0e0e0',
+  fontWeight: 'bold',
 };
 
 export default IntransitTable;

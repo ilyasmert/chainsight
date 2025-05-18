@@ -61,7 +61,7 @@ const AtpStockPieChart = ({ data, loading, error }) => {
                   fill={color}
                   textAnchor={x > cx ? 'start' : 'end'}
                   dominantBaseline="central"
-                  fontSize={12}
+                  fontSize={14}
                 >
                   {`${name}: ${value} (${displayPercent})`}
                 </text>

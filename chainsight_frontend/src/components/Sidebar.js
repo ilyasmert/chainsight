@@ -9,6 +9,9 @@ const Sidebar = () => {
   return (
     <nav className="sidebar">
       <div className="sidebar-links">
+        <NavLink to="/dashboard" activeClassName="active">
+          Dashboard
+        </NavLink>
         <NavLink to="/inventory" activeClassName="active">
           Inventory
         </NavLink>
