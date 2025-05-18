@@ -1,7 +1,14 @@
 import React from 'react';
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
 
-const COLORS = ['#228B22', '#4F4F4F', '#FF0000']; // Red for negative, dark gray for zero, soft green for positive
+const COLORS = ['#228B22', '#4F4F4F', '#FF0000']; // green, gray, red
 
 const AtpStockPieChart = ({ data, loading, error }) => {
   const getPieChartData = () => {
@@ -12,11 +19,9 @@ const AtpStockPieChart = ({ data, loading, error }) => {
     const positiveQuantityCount = data.filter(item => Number(item.quantity) > 0).length;
 
     return [
-        { name: 'Positive Stock', value: positiveQuantityCount },
-        { name: 'Zero Stock', value: zeroQuantityCount },
-        { name: 'Negative Stock', value: negativeQuantityCount },
-
-
+      { name: 'Positive Stock', value: positiveQuantityCount },
+      { name: 'Zero Stock', value: zeroQuantityCount },
+      { name: 'Negative Stock', value: negativeQuantityCount }
     ];
   };
 
@@ -38,20 +43,41 @@ const AtpStockPieChart = ({ data, loading, error }) => {
             data={pieData}
             cx="50%"
             cy="50%"
-            labelLine={false}
-            label={({ name, percent, value }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-            outerRadius={100}
-            fill="#8884d8"
+            outerRadius={100} // Reduced outerRadius
+            labelLine={true}
+            label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
+              const RADIAN = Math.PI / 180;
+              const radius = outerRadius + 20; // Reduced label offset
+              const x = cx + radius * Math.cos(-midAngle * RADIAN);
+              const y = cy + radius * Math.sin(-midAngle * RADIAN);
+              const color = COLORS[index % COLORS.length];
+              const { name, value } = pieData[index];
+              const displayPercent = `${(percent * 100).toFixed(0)}%`;
+
+              return (
+                <text
+                  x={x}
+                  y={y}
+                  fill={color}
+                  textAnchor={x > cx ? 'start' : 'end'}
+                  dominantBaseline="central"
+                  fontSize={12}
+                >
+                  {`${name}: ${value} (${displayPercent})`}
+                </text>
+              );
+            }}
             dataKey="value"
           >
             {pieData.map((entry, index) => (
-              <Cell key={`cell-atp-pie-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip formatter={(value, name) => [`${value} products`, name]} />
           <Legend />
         </PieChart>
       </ResponsiveContainer>
+
       <div style={{ marginTop: 10, textAlign: 'left', fontSize: 14 }}>
         <p><strong>Total Products:</strong> {totalProducts}</p>
         <p><strong>Week:</strong> {week}, <strong>Year:</strong> {year}</p>

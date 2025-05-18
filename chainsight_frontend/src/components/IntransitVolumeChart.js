@@ -14,7 +14,7 @@ const processDataForChart = (intransitData) => {
       const monday = startOfWeek(date, { weekStartsOn: 1 });
       const sunday = endOfWeek(date, { weekStartsOn: 1 });
 
-      const weekLabel = `${format(monday, 'MM-dd')} to ${format(sunday, 'MM-dd')}`;
+      const weekLabel = `${format(monday, 'dd-MM')} to ${format(sunday, 'dd-MM')}`;
       const startDate = monday.toISOString(); // For real sorting
       const volume = Number(item.quantity);
 
@@ -44,7 +44,7 @@ const IntransitVolumeChart = ({ data, loading, error }) => {
 
   const totalVolume = useMemo(() => {
     if (!data || data.length === 0) return 0;
-    return data.reduce((sum, item) => sum + Number(item.quantity || 0), 0);
+    return Math.round(data.reduce((sum, item) => sum + Number(item.quantity || 0), 0));
   }, [data]);
 
   const latestWeek = data?.[0]?.weekid || '-';
@@ -87,7 +87,7 @@ const IntransitVolumeChart = ({ data, loading, error }) => {
             }}
             tick={{ dx: -10, fontSize: 12 }}
           />
-          <Tooltip formatter={(value) => [`${value} m²`, "Total Volume"]} />
+         <Tooltip formatter={(value) => [`${Math.round(value)} m²`, "Total Volume"]} />
           <Legend verticalAlign="top" height={36} />
           <Bar dataKey="totalVolume" fill="#8884d8" name="Total Volume (m²)" />
         </BarChart>
@@ -96,7 +96,7 @@ const IntransitVolumeChart = ({ data, loading, error }) => {
       {/* 👇 Summary below chart */}
       <div style={{ textAlign: 'left', marginTop: 10 }}>
         <p style={{ margin: 0,fontSize: 14 }}>
-          <strong>Total Volume:</strong> {Math.round(totalVolume).toLocaleString()} m²
+           <strong>Total Volume:</strong> {Math.round(totalVolume)} m²
         </p>
         <p> </p>
         <p style={{  margin: 0,fontSize: 14 }}>
