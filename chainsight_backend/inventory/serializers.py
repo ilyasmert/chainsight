@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Ready, AtpStock, Intransit, ToBeProduced, Sales, Users, ReadyArchive, AtpStockArchive, IntransitArchive, ToBeProducedArchive, SalesArchive
+from .models import Ready, AtpStock, Intransit, ToBeProduced, Sales, Users, ReadyArchive, AtpStockArchive, IntransitArchive, ToBeProducedArchive, SalesArchive, TransportationInfo, TransportationInfoArchive
+
 class ReadySerializer(serializers.ModelSerializer):
     class Meta:
         model = Ready
@@ -55,3 +56,13 @@ class SalesArchiveSerializer(serializers.ModelSerializer):
         model = SalesArchive
         fields = '__all__'  # Include all columns
 
+class TransportationInfoSerializer(serializers.ModelSerializer):
+    transportationid = serializers.IntegerField()
+    class Meta:
+        model = TransportationInfo
+        fields = '__all__'
+
+class TransportationInfoArchiveSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TransportationInfoArchive
+        fields = '__all__'

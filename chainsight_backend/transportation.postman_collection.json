@@ -1,0 +1,85 @@
+{
+  "info": {
+    "name": "Transportation API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET Transportation Info",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8000/api/inventory/transportation/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "transportation"
+          ]
+        }
+      }
+    },
+    {
+      "name": "POST Archive Transportation Info",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{}"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/inventory/transportation/archive/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "transportation",
+            "archive"
+          ]
+        }
+      }
+    },
+    {
+      "name": "PUT Update Transportation Info",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "[\n  {\n    \"transportationid\": 1,\n    \"transportationname\": \"Truck\",\n    \"transportationcapacity\": 450,\n    \"capacityunit\": \"kg\",\n    \"transportationcost\": 4,\n    \"costunit\": \"days\",\n    \"year\": 2023\n  },\n  {\n    \"transportationid\": 2,\n    \"transportationname\": \"Container\",\n    \"transportationcapacity\": 2000,\n    \"capacityunit\": \"m2\",\n    \"transportationcost\": 7,\n    \"costunit\": \"days\",\n    \"year\": 2023\n  }\n]"
+        },
+        "url": {
+          "raw": "http://localhost:8000/api/inventory/transportation/update/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8000",
+          "path": [
+            "api",
+            "transportation",
+            "update"
+          ]
+        }
+      }
+    }
+  ]
+}

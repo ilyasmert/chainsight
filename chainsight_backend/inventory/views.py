@@ -1,14 +1,16 @@
 from rest_framework import viewsets
 from .models import (
     Ready, AtpStock, Intransit, ToBeProduced, Sales, Users,
-    ReadyArchive, AtpStockArchive, IntransitArchive, ToBeProducedArchive, SalesArchive
+    ReadyArchive, AtpStockArchive, IntransitArchive, ToBeProducedArchive, SalesArchive,
+    TransportationInfo, TransportationInfoArchive
 )
 from .serializers import (
     ReadySerializer, AtpStockSerializer, IntransitSerializer,
     ToBeProducedSerializer, SalesSerializer, UsersSerializer,
     ReadyArchiveSerializer, AtpStockArchiveSerializer,
     IntransitArchiveSerializer, ToBeProducedArchiveSerializer,
-    SalesArchiveSerializer
+    SalesArchiveSerializer,
+    TransportationInfoSerializer, TransportationInfoArchiveSerializer
 )
 
 from rest_framework.views import APIView
@@ -246,3 +248,36 @@ class OptimizationRunView(APIView):
             return Response(
                 {"error": f"Failed to generate optimization report: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GetTransportationInfo(APIView):
+    def get(self, request):
+        records = TransportationInfo.objects.all()
+        serializer = TransportationInfoSerializer(records, many=True)
+        return Response(serializer.data)
+
+class ArchiveTransportationInfo(APIView):
+    def post(self, request):
+        records = TransportationInfo.objects.all()
+        for item in records:
+            TransportationInfoArchive.objects.create(
+                transportationid=item.transportationid,
+                transportationname=item.transportationname,
+                transportationcapacity=item.transportationcapacity,
+                capacityunit=item.capacityunit,
+                transportationcost=item.transportationcost,
+                costunit=item.costunit,
+                year=item.year,
+                archivedate=timezone.now()
+            )
+        return Response({"message": "Archived successfully."}, status=status.HTTP_201_CREATED)
+
+class UpdateTransportationInfo(APIView):
+    def put(self, request):
+        TransportationInfo.objects.all().delete()
+
+        serializer = TransportationInfoSerializer(data=request.data, many=True)
+        if serializer.is_valid():
+            objs = [TransportationInfo(**item) for item in serializer.validated_data]
+            TransportationInfo.objects.bulk_create(objs)
+            return Response({"message": "Transportation info updated."})
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -6,7 +6,8 @@ from .views import (
     ReadyArchiveViewSet, AtpStockArchiveViewSet,
     IntransitArchiveViewSet, ToBeProducedArchiveViewSet,
     SalesArchiveViewSet, UpdatePalletInfoView,
-    OptimizationRunView
+    OptimizationRunView,
+    GetTransportationInfo, ArchiveTransportationInfo, UpdateTransportationInfo
 
 )
 
@@ -32,4 +33,7 @@ urlpatterns = [
     path('upload-table/', ExcelUploadArchiveView.as_view(), name='upload-table'),
     path('update_pallet_info/', UpdatePalletInfoView.as_view(), name='update-pallet-info'),
     path('optimize/', OptimizationRunView.as_view(), name='optimize'),
+    path('transportation/', GetTransportationInfo.as_view()),
+    path('transportation/archive/', ArchiveTransportationInfo.as_view()),
+    path('transportation/update/', UpdateTransportationInfo.as_view()),
 ]
