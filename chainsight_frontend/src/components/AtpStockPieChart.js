@@ -43,11 +43,11 @@ const AtpStockPieChart = ({ data, loading, error }) => {
             data={pieData}
             cx="50%"
             cy="50%"
-            outerRadius={100} // Reduced outerRadius
+            outerRadius={120} // Reduced outerRadius
             labelLine={true}
             label={({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
               const RADIAN = Math.PI / 180;
-              const radius = outerRadius + 20; // Reduced label offset
+              const radius = outerRadius + 30;
               const x = cx + radius * Math.cos(-midAngle * RADIAN);
               const y = cy + radius * Math.sin(-midAngle * RADIAN);
               const color = COLORS[index % COLORS.length];

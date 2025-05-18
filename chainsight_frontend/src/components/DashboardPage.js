@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { fetchAtpStock, fetchIntransit } from '../services/inventoryApi';
+import { fetchAtpStock, fetchIntransit, fetchToBeProduced } from '../services/inventoryApi';
 import AtpStockPieChart from './AtpStockPieChart';
 import IntransitVolumeChart from './IntransitVolumeChart';
+import ToBeProducedVolumeChart from './ToBeProducedVolumeChart';
 import { AuthContext } from './AuthContext';
 
 const DashboardPage = () => {
@@ -14,6 +15,10 @@ const DashboardPage = () => {
   const [intransitData, setIntransitData] = useState([]);
   const [loadingIntransit, setLoadingIntransit] = useState(true);
   const [errorIntransit, setErrorIntransit] = useState(null);
+
+  const [toBeProducedData, setToBeProducedData] = useState([]);
+  const [loadingTbp, setLoadingTbp] = useState(true);
+  const [errorTbp, setErrorTbp] = useState(null);
 
   useEffect(() => {
     if (!loggedIn) return;
@@ -42,6 +47,18 @@ const DashboardPage = () => {
       } finally {
         setLoadingIntransit(false);
       }
+
+      try {
+        setLoadingTbp(true);
+        const tbpResult = await fetchToBeProduced();
+        setToBeProducedData(tbpResult);
+        setErrorTbp(null);
+      } catch (err) {
+        setErrorTbp("Failed to load To-Be-Produced data.");
+        setToBeProducedData([]);
+      } finally {
+        setLoadingTbp(false);
+      }
     };
 
     loadDashboardData();
@@ -61,9 +78,10 @@ const DashboardPage = () => {
       <h1>chAInSight</h1>
       <p>Welcome to chAInSight! You can display summarized information here.</p>
 
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', marginTop: '30px' }}>
-        <div style={{ flex: 1, background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
-          <h2>ATP Stock Overview</h2>
+      {/* ATP Stock PieChart — Full Width Top */}
+      <div style={{ marginBottom: '30px' }}>
+        <div style={{ background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
+          <h2 style={{ textAlign: 'center' }}>ATP Stock Overview</h2>
           {loadingAtp ? (
             <p>Loading ATP stock data...</p>
           ) : errorAtp ? (
@@ -74,8 +92,11 @@ const DashboardPage = () => {
             <p>No ATP stock data to display.</p>
           )}
         </div>
+      </div>
 
-        <div style={{ flex: 1, background: '#fff', padding: 20, borderRadius: 8, boxShadow: '0 1px 4px #eee' }}>
+      {/* Intransit + To-Be-Produced Charts side-by-side */}
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+        <div style={{ flex: 1 }}>
           {loadingIntransit ? (
             <p>Loading intransit data...</p>
           ) : errorIntransit ? (
@@ -84,6 +105,18 @@ const DashboardPage = () => {
             <IntransitVolumeChart data={intransitData} loading={loadingIntransit} error={errorIntransit} />
           ) : (
             <p>No intransit data to display.</p>
+          )}
+        </div>
+
+        <div style={{ flex: 1 }}>
+          {loadingTbp ? (
+            <p>Loading To-Be-Produced data...</p>
+          ) : errorTbp ? (
+            <p style={{ color: 'red' }}>{errorTbp}</p>
+          ) : toBeProducedData.length > 0 ? (
+            <ToBeProducedVolumeChart data={toBeProducedData} loading={loadingTbp} error={errorTbp} />
+          ) : (
+            <p>No To-Be-Produced data to display.</p>
           )}
         </div>
       </div>
