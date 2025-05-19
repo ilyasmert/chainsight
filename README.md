@@ -9,8 +9,8 @@ This repository includes the **Django backend** and **React frontend**, built to
 ## 🧩 Tech Stack
 
 - **Backend:** Django + Django REST Framework
-- **Frontend:** React (Vite or CRA) + Tailwind CSS
-- **Database:** PostgreSQL (or SQLite for development)
+- **Frontend:** React + Tailwind CSS
+- **Database:** PostgreSQL
 - **API Testing:** Postman
 - **Excel Parsing:** pandas
 
@@ -23,6 +23,7 @@ This repository includes the **Django backend** and **React frontend**, built to
 - Archives historical data automatically upon upload
 - Toggle views with React UI (Ready Table, Upload Section, etc.)
 - Bulk upload up to 5 Excel files at once
+- Update variables in the `transportation_info` table and `pallet_info` page
 
 ---
 
@@ -67,28 +68,31 @@ All API endpoints are prefixed with:
     http://127.0.0.1:8000/api/inventory/
 
 ### 1. Inventory Endpoints
-| Method | Endpoint           | Description                          |
-|--------|--------------------|--------------------------------------|
-| GET    | `/ready/`          | Retrieve all items in the `ready` table          |
-| GET    | `/atp_stock/`      | Retrieve all items in the `atp_stock` table      |
-| GET    | `/intransit/`      | Retrieve all items in the `intransit` table      |
-| GET    | `/sales/`          | Retrieve all items in the `sales` table          |
-| GET    | `/to_be_produced/` | Retrieve all items in the `to_be_produced` table |
-| POST   | `/ready/`          | Add a new item to the `ready` table              |
-| POST   | `/atp_stock/`      | Add a new item to the `atp_stock` table          |
-| POST   | `/intransit/`      | Add a new item to the `intransit` table          |
-| POST   | `/sales/`          | Add a new item to the `sales` table              |
-| POST   | `/to_be_produced/` | Add a new item to the `to_be_produced` table     |
-| PUT    | `/ready/<id>/`     | Update an item in the `ready` table              |
-| PUT    | `/atp_stock/<id>/` | Update an item in the `atp_stock` table          |
-| PUT    | `/intransit/<id>/` | Update an item in the `intransit` table          |
-| PUT    | `/sales/<id>/`     | Update an item in the `sales` table              |
-| PUT    | `/to_be_produced/<id>/` | Update an item in the `to_be_produced` table |
-| DELETE | `/ready/<id>/`     | Delete an item from the `ready` table            |
-| DELETE | `/atp_stock/<id>/` | Delete an item from the `atp_stock` table        |
-| DELETE | `/intransit/<id>/` | Delete an item from the `intransit` table        |
-| DELETE | `/sales/<id>/`     | Delete an item from the `sales` table            |
-| DELETE | `/to_be_produced/<id>/` | Delete an item from the `to_be_produced` table |
+| Method | Endpoint                   | Description                                                                    |
+|--------|----------------------------|--------------------------------------------------------------------------------|
+| GET    | `/ready/`                  | Retrieve all items in the `ready` table                                        |
+| GET    | `/atp_stock/`              | Retrieve all items in the `atp_stock` table                                    |
+| GET    | `/intransit/`              | Retrieve all items in the `intransit` table                                    |
+| GET    | `/sales/`                  | Retrieve all items in the `sales` table                                        |
+| GET    | `/to_be_produced/`         | Retrieve all items in the `to_be_produced` table                               |
+| POST   | `/ready/`                  | Add a new item to the `ready` table                                            |
+| POST   | `/atp_stock/`              | Add a new item to the `atp_stock` table                                        |
+| POST   | `/intransit/`              | Add a new item to the `intransit` table                                        |
+| POST   | `/sales/`                  | Add a new item to the `sales` table                                            |
+| POST   | `/to_be_produced/`         | Add a new item to the `to_be_produced` table                                   |
+| PUT    | `/ready/<id>/`             | Update an item in the `ready` table                                            |
+| PUT    | `/atp_stock/<id>/`         | Update an item in the `atp_stock` table                                        |
+| PUT    | `/intransit/<id>/`         | Update an item in the `intransit` table                                        |
+| PUT    | `/sales/<id>/`             | Update an item in the `sales` table                                            |
+| PUT    | `/to_be_produced/<id>/`    | Update an item in the `to_be_produced` table                                   |
+| DELETE | `/ready/<id>/`             | Delete an item from the `ready` table                                          |
+| DELETE | `/atp_stock/<id>/`         | Delete an item from the `atp_stock` table                                      |
+| DELETE | `/intransit/<id>/`         | Delete an item from the `intransit` table                                      |
+| DELETE | `/sales/<id>/`             | Delete an item from the `sales` table                                          |
+| DELETE | `/to_be_produced/<id>/`    | Delete an item from the `to_be_produced` table                                 |
+| GET    | `/transportation/`         | Retrieve a specific transportation record from `transportation_info` table     |
+| POST   | `/transportation/archive/` | Archive current data in `transportation_info` to `transportation_info_archive` |
+| PUT    | `/transportation/update/`  | Update `transportation_info` with parameters given by the user                 |
 
 ### 2. Excel Upload Endpoint
 | Method | Endpoint         | Description                          |
