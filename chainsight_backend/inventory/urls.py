@@ -2,7 +2,9 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     ReadyViewSet, AtpStockViewSet, IntransitViewSet,
-    ToBeProducedViewSet, SalesViewSet, UsersViewSet, ExcelUploadArchiveView,
+    ToBeProducedViewSet, SalesViewSet, 
+    UsersViewSet, RegisterAPIView, LoginAPIView, 
+    ExcelUploadArchiveView,
     ReadyArchiveViewSet, AtpStockArchiveViewSet,
     IntransitArchiveViewSet, ToBeProducedArchiveViewSet,
     SalesArchiveViewSet, UpdatePalletInfoView,
@@ -36,4 +38,6 @@ urlpatterns = [
     path('transportation/', GetTransportationInfo.as_view()),
     path('transportation/archive/', ArchiveTransportationInfo.as_view()),
     path('transportation/update/', UpdateTransportationInfo.as_view()),
+    path('register/', RegisterAPIView.as_view(), name="api-register"),
+    path('login/',    LoginAPIView.as_view(),    name="api-login"),
 ]

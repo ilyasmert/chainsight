@@ -1,6 +1,6 @@
 from rest_framework import viewsets
 from .models import (
-    Ready, AtpStock, Intransit, ToBeProduced, Sales, Users,
+    Ready, AtpStock, Intransit, ToBeProduced, Sales, UserRoles, Users,
     ReadyArchive, AtpStockArchive, IntransitArchive, ToBeProducedArchive, SalesArchive,
     TransportationInfo, TransportationInfoArchive
 )
@@ -29,6 +29,10 @@ import pandas as pd
 from rest_framework.parsers import MultiPartParser
 from .services.optimization_pipeline import OptimizationPipeline
 from .services.lp_model import DEFAULT_PARAMS
+
+import uuid
+from django.contrib.auth.hashers import make_password, check_password
+from rest_framework.permissions import AllowAny
 
 def create_viewset(model, serializer):
     class GenericViewSet(viewsets.ModelViewSet):
@@ -281,3 +285,64 @@ class UpdateTransportationInfo(APIView):
             TransportationInfo.objects.bulk_create(objs)
             return Response({"message": "Transportation info updated."})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get("username")
+        email    = request.data.get("email")
+        password = request.data.get("password")
+
+        if not all([username, email, password]):
+            return Response({"error": "username, email and password are required."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        if Users.objects.filter(username=username).exists():
+            return Response({"error": "Username already taken."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # default role; adjust 'user' if needed
+        try:
+            default_role = UserRoles.objects.get(rolename="user")
+        except UserRoles.DoesNotExist:
+            return Response({"error": "Default role not found."},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        hashed_pw = make_password(password)
+        user = Users.objects.create(
+            userid       = str(uuid.uuid4()),
+            username     = username,
+            useremail    = email,
+            userpassword = hashed_pw,
+            roleid       = default_role
+        )
+
+        return Response({"success": True, "username": user.username},
+                        status=status.HTTP_201_CREATED)
+
+
+class LoginAPIView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request, *args, **kwargs):
+        username = request.data.get("username")
+        password = request.data.get("password")
+
+        if not all([username, password]):
+            return Response({"error": "username and password are required."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = Users.objects.get(username=username)
+        except Users.DoesNotExist:
+            return Response({"error": "Invalid credentials."},
+                            status=status.HTTP_401_UNAUTHORIZED)
+
+        if check_password(password, user.userpassword):
+            # session-based auth
+            request.session["user_id"] = user.userid
+            return Response({"success": True, "username": user.username})
+        else:
+            return Response({"error": "Invalid credentials."},
+                            status=status.HTTP_401_UNAUTHORIZED)
