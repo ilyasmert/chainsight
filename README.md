@@ -118,4 +118,4 @@ A ready-to-use Postman Collection is included in the repo:
 
     postman/InventoryAPI.postman_collection.json
 
-Import this into Postman to test all endpoints easily.
+Import this into Postman to test all endpoints easily.# chainsight
