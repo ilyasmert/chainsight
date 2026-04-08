@@ -32,7 +32,7 @@ This repository includes the **Django backend** and **React frontend**, built to
 ### 1. Clone the Repo
 
 ```bash
-    git clone https://gitlab.ceng.metu.edu.tr/group03/cfecs.git
+    git clone https://github.com/ilyasmert/chainsight.git
     cd cfecs
 ```
 
